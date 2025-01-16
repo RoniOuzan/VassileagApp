@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Regular-Font";
+  src: url("./assets/fonts/Regular-Font.ttf");
+}
+
+@font-face {
+  font-family: "Bold-Font";
+  src: url("./assets/fonts/Bold-Font.ttf");
+}
+
+body {
+  background-color: #141414;
+}
