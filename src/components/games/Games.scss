@@ -1,10 +1,119 @@
-.container {
+.games {
     background-color: #1F1F1F;
     color: #F5D409;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 64px;
+    gap: 48px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    user-select: none;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #F5D409;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #1F1F1F;
+    }
+
+    &__button {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        background-color: #F5D409;
+        color: #1F1F1F;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 10px 2px #F5D4097F;
+        font-size: 200%;
+        font-family: Bold-Font;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    
+        border: none;
+        outline: none;
+    
+        &:hover {
+            box-shadow: 0 0 10px 4px #F5D409B2;
+            transform: scale(1.1);
+        }
+    
+        &:active {
+            transform: scale(0.95); /* Shrink slightly when clicked */
+        }
+    
+        &:focus {
+            outline: none; /* Remove focus outline */
+        }
+    }
+
+    &__game {
+        position: relative;
+        display: flex;
+        width: 100%;
+        height: 300px;
+        min-height: 300px;
+        background-color: #151515;
+        border: 1px solid #F5D409;
+        border-radius: 16px;
+        padding: 16px;
+        font-family: Bold-Font;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+        box-shadow: 0 0 5px 3px #F5D4097F;
+
+        &:hover {
+            box-shadow: 0 0 15px 4px #F5D409B2;
+            transform: scale(1.01);
+        }
+
+        &__date {
+            font-size: 150%;
+            top: 0px;
+            left: 0px;
+            width: 10%;
+            height: 10%;
+        }
+
+        &__score {
+            position: absolute;
+            display: flex;
+            left: 50%;
+            top: 35%;
+            transform: translate(-50%, -50%);
+            font-size: 500%;
+        }
+
+        &__players {
+            position: absolute;
+            width: 45%;
+            height: 50%;
+            left: 50%;
+            top: 73%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            &__team {
+                font-size: 160%;
+                width: 40%;
+            }
+        }
+    }
 }

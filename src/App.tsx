@@ -5,14 +5,14 @@ import Sider from 'antd/es/layout/Sider';
 import { useState } from 'react';
 import './App.scss';
 import Games from './components/games/Games';
-import Players from './components/Players';
-import Statistics from './components/Statistics';
+import Players from './components/players/Players';
+import Statistics from './components/statistics/Statistics';
 
-export const headerHeight = 48;
+export const headerHeight = 64;
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedKey, setSelectedKey] = useState('1'); // State to track the selected menu item
+  const [selectedKey, setSelectedKey] = useState('games');
 
   const renderContent = () => {
     switch (selectedKey) {
@@ -42,7 +42,7 @@ const App = () => {
         <Sider className='app__sider' trigger={null} collapsible collapsed={collapsed}>
           <Menu
             className='app__sider__tabs'
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={['games']}
             onClick={({ key }) => setSelectedKey(key)} // Update selectedKey state on menu click
             items={[
               {

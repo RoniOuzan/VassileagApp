@@ -1,11 +1,13 @@
+import "./Players.scss";
+
 interface Props {
 
 }
 
 const Players: React.FC<Props> = ({ }) => {
     return (
-        <div>
-            
+        <div className="container">
+            Players
         </div>
     );
 }
