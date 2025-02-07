@@ -44,21 +44,21 @@
         font-family: Bold-Font;
         cursor: pointer;
         transition: box-shadow 0.3s ease, transform 0.3s ease;
-    
+
         border: none;
         outline: none;
-    
+
         &:hover {
             box-shadow: 0 0 10px 4px #F5D409B2;
             transform: scale(1.1);
         }
-    
+
         &:active {
-            transform: scale(0.95); /* Shrink slightly when clicked */
+            transform: scale(0.95);
         }
-    
+
         &:focus {
-            outline: none; /* Remove focus outline */
+            outline: none;
         }
     }
 
@@ -74,7 +74,6 @@
         padding: 16px;
         font-family: Bold-Font;
         transition: box-shadow 0.3s ease, transform 0.3s ease;
-
         box-shadow: 0 0 5px 3px #F5D4097F;
 
         &:hover {
@@ -86,7 +85,7 @@
             font-size: 150%;
             top: 0px;
             left: 0px;
-            width: 10%;
+            width: 12%;
             height: 10%;
         }
 
@@ -113,6 +112,147 @@
             &__team {
                 font-size: 160%;
                 width: 40%;
+            }
+        }
+    }
+
+    &__create-game {
+        .ant-modal-content {
+            background-color: #1F1F1F;
+            color: #F5D409;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 0 10px 2px #F5D40930;
+            border: 1px solid #F5D409;
+
+            .ant-modal-header {
+                background-color: #1F1F1F;
+            }
+
+            .ant-modal-title {
+                font-size: 24px;
+                color: #F5D409;
+                font-family: Bold-Font;
+            }
+
+            .ant-modal-body {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .ant-modal-footer {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .ant-btn {
+                color: #1F1F1F;
+                font-weight: bold;
+                border-radius: 8px;
+                transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+                &:hover {
+                    box-shadow: 0 0 10px 4px #F5D40940;
+                    transform: scale(1.05);
+                    color: #1F1F1F;
+                }
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+
+            .ant-btn-primary {
+                background-color: #F5D409;
+                border-color: #F5D409;
+                color: #1F1F1F;
+
+                &:hover {
+                    background-color: #E5C308;
+                    border-color: #E5C308;
+                    color: #1F1F1F;
+                }
+
+                &:active {
+                    background-color: #e4bc07;
+                    border-color: #e4bc07;
+                }
+            }
+
+            .ant-form-item-label {
+                color: #F5D409;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .ant-input {
+                background-color: #1F1F1F;
+                color: #F5D409;
+                border: 1px solid #F5D409;
+                border-radius: 8px;
+                padding: 8px;
+                font-size: 16px;
+
+                &:focus {
+                    border-color: #E5C308;
+                    box-shadow: 0 0 8px 2px #F5D40970;
+                }
+
+                &:hover {
+                    border-color: #E5C308;
+                }
+
+                &::placeholder {
+                    color: #555555; /* Set the color of the placeholder text */
+                    opacity: 1; /* Ensure the placeholder is fully opaque */
+                }
+            }
+
+            .ant-input-number {
+                background-color: #1F1F1F;
+                color: #F5D409;
+                border: 1px solid #F5D409;
+                border-radius: 8px;
+                padding: 8px;
+                font-size: 16px;
+                width: 100%;
+
+                &:focus {
+                    border-color: #E5C308;
+                    box-shadow: 0 0 8px 2px #F5D40970;
+                }
+
+                &:hover {
+                    border-color: #E5C308;
+                }
+
+                &::placeholder {
+                    color: #555555; /* Set the color of the placeholder text */
+                    opacity: 1; /* Ensure the placeholder is fully opaque */
+                }
+            }
+        }
+
+        &__teams {
+            display: flex;
+            justify-content: space-between; // Spaces the teams apart
+            gap: 32px;
+            width: 100%;
+        }
+
+        &__team {
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            &--left {
+                justify-content: flex-start;
+            }
+
+            &--right {
+                justify-content: flex-start;
             }
         }
     }
