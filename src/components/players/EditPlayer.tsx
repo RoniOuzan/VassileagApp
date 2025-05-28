@@ -42,6 +42,19 @@ const EditPlayer: React.FC<Props> = ({ menuState, setMenuState, player, setPlaye
         setMenuState(false);
     };
 
+    const handleDeletePlayer = () => {
+        setPlayer({...player, ratings: {
+            overall: -1,
+            pace: -1,
+            shooting: -1,
+            passing: -1,
+            dribbling: -1,
+            defending: -1,
+            physicality: -1
+        }});
+        setMenuState(false);
+    }
+
     const updateRating = (key: keyof Player["ratings"], value: number | null) => {
         setEditingPlayer({
             ...editingPlayer,
@@ -107,9 +120,15 @@ const EditPlayer: React.FC<Props> = ({ menuState, setMenuState, player, setPlaye
                             {errorMessages[i]}
                         </ErrorMessage>
                     ))}
-                <Button type="primary" onClick={handleEditPlayer}>
-                    Done
-                </Button>
+
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <Button type="primary" onClick={handleEditPlayer}>
+                        Done
+                    </Button>
+                    <Button danger type="default" onClick={handleDeletePlayer}>
+                        Delete
+                    </Button>
+                </div>
             </Form>
         </Modal>
     );

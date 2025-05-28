@@ -163,6 +163,28 @@
                 }
             }
 
+            .ant-btn-dangerous {
+                background-color: transparent;
+                color: #F44336;
+                border: 2px solid #F44336;
+                font-weight: bold;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background-color: #F4433690;
+                    color: #1F1F1F;
+                    box-shadow: 0 0 5px 2px #F4433670;
+                    transform: scale(1.04);
+                }
+
+                &:active {
+                    transform: scale(0.96);
+                    background-color: #d32f2fAA;
+                    border-color: #d32f2f90;
+                }
+            }
+
             .ant-form-item-label {
                 color: #F5D409;
                 font-size: 16px;

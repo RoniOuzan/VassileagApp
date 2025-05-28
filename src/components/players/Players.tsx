@@ -114,6 +114,11 @@ const Players: React.FC = () => {
   }, [socket]);
 
   const setPlayer = (player: Player) => {
+    if (Object.entries(player.ratings).every(value => value[1] == -1)) { // delete
+        updatePlayers([...players.filter(p => p.name.toLowerCase() !== player.name.toLowerCase())])
+        return;
+    }
+
     const updatedPlayers = [...players];
     const index = updatedPlayers.findIndex((p) => p.name === player.name);
 
