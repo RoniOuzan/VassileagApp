@@ -117,13 +117,19 @@
     }
 
     &__create-game {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+
         .ant-modal-content {
-            background-color: #1F1F1F;
+            background-color: #202020;
             color: #F5D409;
             border-radius: 16px;
             padding: 24px;
             box-shadow: 0 0 10px 2px #F5D40930;
             border: 1px solid #F5D409;
+            width: 1024px;
 
             .ant-modal-header {
                 background-color: #1F1F1F;
@@ -187,7 +193,7 @@
             }
 
             .ant-input {
-                background-color: #1F1F1F;
+                background-color: #292929;
                 color: #F5D409;
                 border: 1px solid #F5D409;
                 border-radius: 8px;
@@ -210,7 +216,7 @@
             }
 
             .ant-input-number {
-                background-color: #1F1F1F;
+                background-color: #292929;
                 color: #F5D409;
                 border: 1px solid #F5D409;
                 border-radius: 8px;
@@ -245,14 +251,73 @@
             width: 48%;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
 
-            &--left {
-                justify-content: flex-start;
+            label {
+                font-size: 18px;
+                margin-bottom: 8px;
             }
 
-            &--right {
-                justify-content: flex-start;
+            .ant-space {
+                display: flex;
+                gap: 8px;
+
+                .ant-select,
+                .ant-input-number,
+                .ant-input {
+                    background-color: #292929;
+                    border: 1px solid #F5D409BB;
+                    color: #F5D409;
+                    border-radius: 8px;
+
+                    .ant-select-selector {
+                        background-color: #292929 !important;
+                        border: none !important;
+                        color: #F5D409 !important;
+                    }
+
+                    input {
+                        color: #F5D409;
+                        background-color: #292929;
+                    }
+
+                    &:hover,
+                    &:focus-within {
+                        border-color: #F5D409BB;
+                        box-shadow: 0 0 5px #F5D40940;
+                    }
+                }
+
+                .ant-btn-dangerous {
+                    color: #F5D409;
+                    border-color: #F5D409BB;
+                    background-color: #292929;
+
+                    &:hover {
+                        background-color: #F5D40933;
+                        color: #E5C308;
+                        border-color: #F5D409BB;
+                    }
+                }
+            }
+
+            .ant-btn-dashed {
+                border-color: #F5D409BB;
+                color: #F5D409;
+                background-color: #292929;
+                font-weight: bold;
+                margin-top: 12px;
+
+                &:hover {
+                    background-color: #F5D40933 !important;
+                    color: #E5C308;
+                    border-color: #E5C308 !important;
+                }
+
+                &:active {
+                    background-color: #E5C30810;
+                    border-color: #E5C308;
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import { useSocket } from "../../context/SocketContext";
 import AddGame from "./AddGame";
 import GameComponent from "./GameComponent";
 import "./Games.scss";
+import { Player } from "../players/Players";
 
 export type Game = {
     date: string;
@@ -15,7 +16,7 @@ export type Game = {
 
 export type Team = {
     goals: number;
-    players: string[];
+    players: Player[];
 };
 
 type MongoGame = Game & { _id?: string };
@@ -28,8 +29,8 @@ const Games: React.FC = () => {
     const [isCreateGameOpen, setIsCreateGameOpen] = useState(false);
     const [newGame, setNewGame] = useState<Game>({
         date: "",
-        team1: { goals: 0, players: [""] },
-        team2: { goals: 0, players: [""] },
+        team1: { goals: 0, players: [{ name: "", statistics: { goals: 0, assists: 0 } }] },
+        team2: { goals: 0, players: [{ name: "", statistics: { goals: 0, assists: 0 } }] },
     });
 
     useEffect(() => {
@@ -99,6 +100,7 @@ const Games: React.FC = () => {
                     newGame={newGame}
                     setNewGame={setNewGame}
                     updateGames={updateGames}
+                    playersList={["Player 1", "Player 2", "Player 3", "Player 4"]}
                 />
         </div>
     );
