@@ -6,6 +6,7 @@ import { useSocket } from "../../context/SocketContext";
 import AddGame from "./AddGame";
 import GameComponent from "./GameComponent";
 import "./Games.scss";
+import { players } from "../players/Players";
 
 export type PlayedPlayer = {
     name: string;
@@ -105,7 +106,7 @@ const Games: React.FC = () => {
                     newGame={newGame}
                     setNewGame={setNewGame}
                     updateGames={updateGames}
-                    playersList={["Player 1", "Player 2", "Player 3", "Player 4"]}
+                    playersList={players.map(p => p.name)}
                 />
         </div>
     );

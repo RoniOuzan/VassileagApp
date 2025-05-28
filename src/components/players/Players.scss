@@ -11,6 +11,7 @@
     padding: 32px;
     gap: 20px;
     overflow-y: auto;
+    flex-wrap: wrap;
     scroll-behavior: smooth;
     user-select: none;
 
@@ -286,6 +287,7 @@
     text-align: center;
     gap: 10px;
     margin: 10px;
+    animation: all 1s;
 
     &__top {
         width: 100%;
@@ -330,5 +332,13 @@
     &__stat-value {
         font-size: 24px;
         font-weight: bold;
+    }
+
+    &:hover {
+        transform: scale(1.04);
+    }
+
+    &:active {
+        transform: scale(0.96);
     }
 }

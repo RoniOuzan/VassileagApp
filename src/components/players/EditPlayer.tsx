@@ -1,53 +1,52 @@
-import { Modal, Form, Input, Button, InputNumber, Select } from "antd";
+import { Button, Form, InputNumber, Modal, Select } from "antd";
 import { useState } from "react";
-import { defaultPlayer, Player, players, positionOptions, Ratings, ratingTypes } from "./Players";
 import ErrorMessage from "../other/ErrorMessage";
+import { Player, positionOptions, Ratings, ratingTypes } from "./Players";
+
+export type MenuState = "create" | "edit" | "close";
 
 const errorMessages = [
     "The player's name is not valid!",
-    "This name is already taken!",
     "The player's overall rating is not valid!",
     "One or more of the player's rating is not valid!",
 ];
 
 interface Props {
-    show: boolean;
-    setShow: (value: boolean) => void;
-    newPlayer: Player;
-    setNewPlayer: (player: Player) => void;
-    updatePlayers: (players: Player[]) => void;
+    menuState: boolean;
+    setMenuState: (value: boolean) => void;
+    player: Player;
+    setPlayer: (player: Player) => void;
 }
 
-const AddPlayer: React.FC<Props> = ({ show, setShow, newPlayer, setNewPlayer, updatePlayers }) => {
+const EditPlayer: React.FC<Props> = ({ menuState, setMenuState, player, setPlayer }) => {
     const [errors, setErrors] = useState<boolean[]>(Array(4).fill(false));
+    const [editingPlayer, setEditingPlayer] = useState<Player>(player);
     
     const isRatingInvalid = (ratings: Ratings) => {
         return ratings.pace < 0 || ratings.shooting < 0 || ratings.passing < 0 || 
             ratings.dribbling < 0 || ratings.defending < 0 || ratings.physicality < 0;
     }
 
-    const handleAddPlayer = () => {
+    const handleEditPlayer = () => {
         const conditions = [
-            !newPlayer.name,
-            players.map(p => p.name).some(n => n.toLowerCase() == newPlayer.name.toLowerCase()),
-            newPlayer.ratings.overall < 0,
-            isRatingInvalid(newPlayer.ratings),
+            !editingPlayer.name,
+            editingPlayer.ratings.overall < 0,
+            isRatingInvalid(editingPlayer.ratings),
         ];
         if (conditions.some(c => c)) {
             setErrors(conditions);
             return;
         }
 
-        updatePlayers([...players, newPlayer]);
-        setShow(false);
-        setNewPlayer(defaultPlayer);
+        setPlayer(editingPlayer);
+        setMenuState(false);
     };
 
     const updateRating = (key: keyof Player["ratings"], value: number | null) => {
-        setNewPlayer({
-            ...newPlayer,
+        setEditingPlayer({
+            ...editingPlayer,
             ratings: {
-                ...newPlayer.ratings,
+                ...editingPlayer.ratings,
                 [key]: value !== null ? Number(value) : 0
             }
         });
@@ -56,24 +55,16 @@ const AddPlayer: React.FC<Props> = ({ show, setShow, newPlayer, setNewPlayer, up
     return (
         <Modal
             className="players__create-player"
-            title="Create Player"
-            open={show}
-            onCancel={() => setShow(false)}
+            title={"Edit Player - " + player.name} 
+            open={menuState}
+            onCancel={() => setMenuState(false)}
             footer={null}
         >
             <Form layout="vertical">
-                <Form.Item label="Name">
-                    <Input
-                        placeholder="Name"
-                        value={newPlayer.name}
-                        onChange={(e) => setNewPlayer({ ...newPlayer, name: e.target.value })}
-                    />
-                </Form.Item>
-
                 <Form.Item label="Position">
                     <Select
-                        value={newPlayer.position}
-                        onChange={(value) => setNewPlayer({ ...newPlayer, position: value })}
+                        value={editingPlayer.position}
+                        onChange={(value) => setEditingPlayer({ ...editingPlayer, position: value })}
                         placeholder="Select position"
                     >
                         {positionOptions.map((pos) => (
@@ -88,7 +79,7 @@ const AddPlayer: React.FC<Props> = ({ show, setShow, newPlayer, setNewPlayer, up
                     <InputNumber
                         style={{ width: "100%", fontSize: "24px", fontWeight: "bold" }}
                         placeholder="Overall"
-                        value={newPlayer.ratings.overall}
+                        value={editingPlayer.ratings.overall}
                         onChange={(value) => updateRating("overall", value)}
                     />
                 </Form.Item>
@@ -98,7 +89,7 @@ const AddPlayer: React.FC<Props> = ({ show, setShow, newPlayer, setNewPlayer, up
                         <Form.Item label={key.charAt(0).toUpperCase() + key.slice(1)} key={key} style={{ flex: "1 1 30%" }}>
                             <InputNumber
                                 placeholder={key}
-                                value={newPlayer.ratings[key as keyof Player["ratings"]]}
+                                value={editingPlayer.ratings[key as keyof Player["ratings"]]}
                                 onChange={(value) => updateRating(key as keyof Player["ratings"], value)}
                                 style={{ width: "100%" }}
                                 max={99}
@@ -116,12 +107,12 @@ const AddPlayer: React.FC<Props> = ({ show, setShow, newPlayer, setNewPlayer, up
                             {errorMessages[i]}
                         </ErrorMessage>
                     ))}
-                <Button type="primary" onClick={handleAddPlayer}>
-                    Add Player
+                <Button type="primary" onClick={handleEditPlayer}>
+                    Done
                 </Button>
             </Form>
         </Modal>
     );
 };
 
-export default AddPlayer;
+export default EditPlayer;
