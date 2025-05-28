@@ -1,6 +1,6 @@
-import { Form, Input, Space, Select, Button } from "antd";
-import { Player, Statistics } from "../players/Players";
-import { Game } from "./Games";
+import { Button, Input, Select, Space } from "antd";
+import { Statistics } from "../players/Players";
+import { Game, PlayedPlayer } from "./Games";
 
 interface Props {
     team: "team1" | "team2",
@@ -8,49 +8,37 @@ interface Props {
     setNewGame: (game: Game) => void;
     playersList: string[];
     isPlayerNotListed: (player: string) => boolean;
-    setPlayingPlayers: (players: Player[]) => void;
+    setPlayedPlayers: (players: PlayedPlayer[]) => void;
 }
 
-const PlayersTeamList: React.FC<Props> = ( { team, newGame, setNewGame, playersList, isPlayerNotListed, setPlayingPlayers } ) => {
+const PlayersTeamList: React.FC<Props> = ( { team, newGame, setNewGame, playersList, isPlayerNotListed, setPlayedPlayers } ) => {
     const handlePlayerChange = (
         index: number,
-        field: keyof Player | keyof Statistics,
+        field: keyof PlayedPlayer | keyof Statistics,
         value: string | number
     ) => {
-        const updatedPlayers = [...(newGame[team].players as Player[])];
+        const updatedPlayers = [...(newGame[team].players as PlayedPlayer[])];
 
         if (field === "goals" || field === "assists") {
-            updatedPlayers[index].statistics = {
-                ...updatedPlayers[index].statistics,
-                [field]: Number(value),
-            };
+            updatedPlayers[index][field] = Number(value);
         } else if (field === "name") {
             updatedPlayers[index].name = value as string;
         }
 
-        setPlayingPlayers(updatedPlayers);
+        setPlayedPlayers(updatedPlayers);
         setNewGame({
             ...newGame,
             [team]: {
                 ...newGame[team],
                 players: updatedPlayers,
-            },
-        });
-    };
-
-    const handleTeamGoalsChange = (goals: number) => {
-        setNewGame({
-            ...newGame,
-            [team]: {
-                ...newGame[team],
-                goals,
+                goals: updatedPlayers.map(p => p.goals).reduce((t, c) => t + c, 0) // sum
             },
         });
     };
 
     const addPlayer = () => {
-        const updatedPlayers = [...(newGame[team].players as Player[])];
-        updatedPlayers.push({ name: "", statistics: { goals: 0, assists: 0 } });
+        const updatedPlayers = [...(newGame[team].players as PlayedPlayer[])];
+        updatedPlayers.push({ name: "", goals: 0, assists: 0 });
         setNewGame({
             ...newGame,
             [team]: {
@@ -61,7 +49,7 @@ const PlayersTeamList: React.FC<Props> = ( { team, newGame, setNewGame, playersL
     };
 
     const removePlayer = (index: number) => {
-        const updatedPlayers = [...(newGame[team].players as Player[])];
+        const updatedPlayers = [...(newGame[team].players as PlayedPlayer[])];
         updatedPlayers.splice(index, 1);
         setNewGame({
             ...newGame,
@@ -74,19 +62,10 @@ const PlayersTeamList: React.FC<Props> = ( { team, newGame, setNewGame, playersL
 
     return (
         <div className="games__create-game__team games__create-game__team--left">
-            <Form.Item label={`Team ${team.charAt(4)} Goals`}>
-                <Input
-                    type="number"
-                    value={newGame[team].goals}
-                    onChange={(e) =>
-                        handleTeamGoalsChange(Number(e.target.value))
-                    }
-                />
-            </Form.Item>
-
+            <label>Players</label>
             <div>
                 <label>Team {team.charAt(4)} Players</label>
-                {(newGame[team].players as Player[]).map((player, idx) => (
+                {(newGame[team].players as PlayedPlayer[]).map((player, idx) => (
                     <Space
                         key={`team${team.charAt(4)}-player-${idx}`}
                         style={{ display: "flex", marginBottom: 8 }}
@@ -109,7 +88,7 @@ const PlayersTeamList: React.FC<Props> = ( { team, newGame, setNewGame, playersL
                             type="number"
                             min={0}
                             placeholder="Goals"
-                            value={player.statistics.goals}
+                            value={player.goals}
                             onChange={(e) =>
                                 handlePlayerChange(idx, "goals", e.target.value)
                             }
@@ -119,7 +98,7 @@ const PlayersTeamList: React.FC<Props> = ( { team, newGame, setNewGame, playersL
                             type="number"
                             min={0}
                             placeholder="Assists"
-                            value={player.statistics.assists}
+                            value={player.assists}
                             onChange={(e) =>
                                 handlePlayerChange(idx, "assists", e.target.value)
                             }

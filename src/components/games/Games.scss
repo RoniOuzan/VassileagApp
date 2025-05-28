@@ -118,8 +118,6 @@
 
     &__create-game {
         display: flex;
-        width: 100%;
-        height: 100%;
         justify-content: center;
 
         .ant-modal-content {
@@ -129,7 +127,7 @@
             padding: 24px;
             box-shadow: 0 0 10px 2px #F5D40930;
             border: 1px solid #F5D409;
-            width: 1024px;
+            width: 924px;
 
             .ant-modal-header {
                 background-color: #1F1F1F;

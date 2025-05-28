@@ -1,16 +1,13 @@
-import { Modal, Form, Input, Button } from "antd";
-import { Game } from "./Games";
+import { Modal, Form, Input, Button, Divider } from "antd";
+import { Game, PlayedPlayer } from "./Games";
 import { useEffect, useState } from "react";
 import ErrorMessage from "../other/ErrorMessage";
-import { Player } from "../players/Players";
 import PlayersTeamList from "./PlayersTeamList";
 
 const errorMessages = [
   "The date is not valid!",
   "The players of team 1 are not valid!",
   "The players of team 2 are not valid!",
-  "The goals of team 1 is not valid!",
-  "The goals of team 2 is not valid!",
 ];
 
 interface Props {
@@ -33,12 +30,17 @@ const AddGame: React.FC<Props> = ({
   playersList,
 }) => {
   const [errors, setErrors] = useState<boolean[]>(Array(5).fill(false));
-  const [playingPlayers1, setPlayingPlayers1] = useState<Player[]>([]);
-  const [playingPlayers2, setPlayingPlayers2] = useState<Player[]>([]);
+  const [playedPlayers1, setPlayedPlayers1] = useState<PlayedPlayer[]>([]);
+  const [playedPlayers2, setPlayedPlayers2] = useState<PlayedPlayer[]>([]);
+
+  const resetPlayedPlayers = () => {
+    setPlayedPlayers1([]);
+    setPlayedPlayers2([]);
+  };
 
   const isPlayerNotListed = (player: string) =>
-    !playingPlayers1.some((p) => p.name === player) &&
-    !playingPlayers2.some((p) => p.name === player);
+    !playedPlayers1.some((p) => p.name === player) &&
+    !playedPlayers2.some((p) => p.name === player);
 
   const handleInputChange = (field: keyof Game, value: string) => {
     setNewGame({ ...newGame, [field]: value });
@@ -47,12 +49,10 @@ const AddGame: React.FC<Props> = ({
   const handleAddGame = () => {
     const conditions = [
       !newGame.date,
-      (newGame.team1.players as Player[]).length === 0 ||
-        (newGame.team1.players as Player[]).some((p) => !p.name),
-      (newGame.team2.players as Player[]).length === 0 ||
-        (newGame.team2.players as Player[]).some((p) => !p.name),
-      newGame.team1.goals < 0,
-      newGame.team2.goals < 0,
+      (newGame.team1.players as PlayedPlayer[]).length === 0 ||
+        (newGame.team1.players as PlayedPlayer[]).some((p) => !p.name),
+      (newGame.team2.players as PlayedPlayer[]).length === 0 ||
+        (newGame.team2.players as PlayedPlayer[]).some((p) => !p.name),
     ];
     if (conditions.some((c) => c)) {
       setErrors(conditions);
@@ -68,6 +68,12 @@ const AddGame: React.FC<Props> = ({
     setErrors(Array(5).fill(false));
   };
 
+  useEffect(() => {
+    if (show) {
+        resetPlayedPlayers();
+    }
+  }, [show]);
+
   // Initialize players array if empty
   useEffect(() => {
     if (
@@ -78,7 +84,7 @@ const AddGame: React.FC<Props> = ({
         ...newGame,
         team1: {
           ...newGame.team1,
-          players: [{ name: "", statistics: { goals: 0, assists: 0 } }],
+          players: [{ name: "", goals: 0, assists: 0 }],
         },
       });
     }
@@ -93,7 +99,7 @@ const AddGame: React.FC<Props> = ({
         ...newGame,
         team2: {
           ...newGame.team2,
-          players: [{ name: "", statistics: { goals: 0, assists: 0 } }],
+          players: [{ name: "", goals: 0, assists: 0 }],
         },
       });
     }
@@ -116,6 +122,8 @@ const AddGame: React.FC<Props> = ({
           />
         </Form.Item>
 
+        <Divider />
+
         <div className="games__create-game__teams">
           <PlayersTeamList
             team={"team1"}
@@ -123,7 +131,7 @@ const AddGame: React.FC<Props> = ({
             setNewGame={setNewGame}
             playersList={playersList}
             isPlayerNotListed={isPlayerNotListed}
-            setPlayingPlayers={setPlayingPlayers1}
+            setPlayedPlayers={setPlayedPlayers1}
           />
           <PlayersTeamList
             team={"team2"}
@@ -131,7 +139,7 @@ const AddGame: React.FC<Props> = ({
             setNewGame={setNewGame}
             playersList={playersList}
             isPlayerNotListed={isPlayerNotListed}
-            setPlayingPlayers={setPlayingPlayers2}
+            setPlayedPlayers={setPlayedPlayers2}
           />
         </div>
 
