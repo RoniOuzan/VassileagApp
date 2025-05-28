@@ -5,16 +5,25 @@ import Sider from 'antd/es/layout/Sider';
 import { useState } from 'react';
 import './App.scss';
 import Games from './components/games/Games';
-import Players from './components/players/Players';
+import Players from './components/players/Players.tsx';
 import Statistics from './components/statistics/Statistics';
+import { useSocket } from './context/SocketContext.tsx';
+import NoConnection from './components/other/no_connection/NoConnection.tsx';
 
 export const headerHeight = 64;
 
 const App = () => {
+  const socket = useSocket();
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState('games');
 
+  const isSocketConnected = socket?.readyState === WebSocket.OPEN;
+
   const renderContent = () => {
+    if (!isSocketConnected) {
+      return <NoConnection />;
+    }
+
     switch (selectedKey) {
       case 'games':
         return <Games />;
@@ -45,21 +54,9 @@ const App = () => {
             defaultSelectedKeys={['games']}
             onClick={({ key }) => setSelectedKey(key)} // Update selectedKey state on menu click
             items={[
-              {
-                key: 'games',
-                icon: <UserOutlined />,
-                label: 'Games',
-              },
-              {
-                key: 'players',
-                icon: <VideoCameraOutlined />,
-                label: 'Players',
-              },
-              {
-                key: 'statistics',
-                icon: <UploadOutlined />,
-                label: 'Statistics',
-              },
+              { key: 'games', icon: <UserOutlined />, label: 'Games' },
+              { key: 'players', icon: <VideoCameraOutlined />, label: 'Players' },
+              { key: 'statistics', icon: <UploadOutlined />, label: 'Statistics' },
             ]}
           />
         </Sider>

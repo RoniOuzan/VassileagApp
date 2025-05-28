@@ -1,10 +1,241 @@
-.container {
+.players {
     background-color: #1F1F1F;
     color: #F5D409;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    padding: 32px;
+    gap: 20px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    user-select: none;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #F5D409;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #1F1F1F;
+    }
+
+    &__button {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        background-color: #F5D409;
+        color: #1F1F1F;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 10px 2px #F5D4097F;
+        font-size: 200%;
+        font-family: Bold-Font;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+        border: none;
+        outline: none;
+
+        &:hover {
+            box-shadow: 0 0 10px 4px #F5D409B2;
+            transform: scale(1.1);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__player {
+        position: relative;
+        display: flex;
+        width: 30%;
+        height: 160px;
+        min-height: 160px;
+        background-color: #151515;
+        border: 1px solid #F5D409;
+        border-radius: 12px;
+        padding: 16px;
+        font-family: Bold-Font;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 0 5px 3px #F5D4097F;
+
+        &:hover {
+            box-shadow: 0 0 15px 4px #F5D409B2;
+            transform: scale(1.01);
+        }
+
+        &__name {
+            font-size: 250%;
+            top: 0px;
+            left: 0px;
+            width: 60%;
+            display: flex;
+            align-items: center;
+        }
+
+        &__statistics {
+            display: flex;
+            align-items: center;
+            right: 0px;
+            font-size: 300%;
+        }
+    }
+
+    &__create-player {
+        .ant-modal-content {
+            background-color: #1F1F1F;
+            color: #F5D409;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 0 10px 2px #F5D40930;
+            border: 1px solid #F5D409;
+
+            .ant-modal-header {
+                background-color: #1F1F1F;
+            }
+
+            .ant-modal-title {
+                font-size: 24px;
+                color: #F5D409;
+                font-family: Bold-Font;
+            }
+
+            .ant-modal-body {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .ant-modal-footer {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .ant-btn {
+                color: #1F1F1F;
+                font-weight: bold;
+                border-radius: 8px;
+                transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+                &:hover {
+                    box-shadow: 0 0 10px 4px #F5D40940;
+                    transform: scale(1.05);
+                    color: #1F1F1F;
+                }
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+
+            .ant-btn-primary {
+                background-color: #F5D409;
+                border-color: #F5D409;
+                color: #1F1F1F;
+
+                &:hover {
+                    background-color: #E5C308;
+                    border-color: #E5C308;
+                    color: #1F1F1F;
+                }
+
+                &:active {
+                    background-color: #e4bc07;
+                    border-color: #e4bc07;
+                }
+            }
+
+            .ant-form-item-label {
+                color: #F5D409;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .ant-input {
+                background-color: #1F1F1F;
+                color: #F5D409;
+                border: 1px solid #F5D409;
+                border-radius: 8px;
+                padding: 8px;
+                font-size: 16px;
+
+                &:focus {
+                    border-color: #E5C308;
+                    box-shadow: 0 0 8px 2px #F5D40970;
+                }
+
+                &:hover {
+                    border-color: #E5C308;
+                }
+
+                &::placeholder {
+                    color: #555555; /* Set the color of the placeholder text */
+                    opacity: 1; /* Ensure the placeholder is fully opaque */
+                }
+            }
+
+            .ant-input-number {
+                background-color: #1F1F1F;
+                color: #F5D409;
+                border: 1px solid #F5D409;
+                border-radius: 8px;
+                padding: 8px;
+                font-size: 16px;
+                width: 100%;
+
+                &:focus {
+                    border-color: #E5C308;
+                    box-shadow: 0 0 8px 2px #F5D40970;
+                }
+
+                &:hover {
+                    border-color: #E5C308;
+                }
+
+                &::placeholder {
+                    color: #555555; /* Set the color of the placeholder text */
+                    opacity: 1; /* Ensure the placeholder is fully opaque */
+                }
+            }
+        }
+
+        &__teams {
+            display: flex;
+            justify-content: space-between; // Spaces the teams apart
+            gap: 32px;
+            width: 100%;
+        }
+
+        &__team {
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            &--left {
+                justify-content: flex-start;
+            }
+
+            &--right {
+                justify-content: flex-start;
+            }
+        }
+    }
 }

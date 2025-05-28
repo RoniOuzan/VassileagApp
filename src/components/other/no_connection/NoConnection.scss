@@ -1,0 +1,22 @@
+.no-connection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    text-align: center;
+    color: #F5D409;
+    font-family: 'Arial', sans-serif;
+    background-color: #222222;
+  
+    .ant-spin-dot {
+      color: #F5D409;
+    }
+  
+    .no-connection__message {
+      font-size: 32px;
+      margin-top: 16px;
+      color: #F5D409;
+    }
+  }
+  
