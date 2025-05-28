@@ -6,14 +6,32 @@ import { useEffect, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
 import AddPlayer from "./AddPlayer";
 
-export type Player = {
-    name: string;
-    statistics: Statistics;
+export const defaultPlayer: Player = {
+    name: "Player",
+    position: "ST",
+    ratings: { overall: 0, pace: 0, shooting: 0, passing: 0, dribbling: 0, defending: 0, physicality: 0 },
 };
 
-export type Statistics = {
-    goals: number;
-    assists: number;
+export const ratingTypes = [ "pace", "shooting", "passing", "dribbling", "defending", "physicality" ];
+export const positionOptions: Position[] = [ "ST", "LW", "RW", "LM", "RM", "CAM", "CM", "CDM", "LB", "RB", "CB", "GK" ];
+
+export type Position = "ST" | "LW" | "RW" | "LM" | "RM" | "CAM" | "CM" | "CDM" | "LB" | "RB" | "CB" | "GK";
+
+
+export type Player = {
+    name: string;
+    position: Position;
+    ratings: Ratings;
+};
+
+export type Ratings = {
+    overall: number;
+    pace: number;
+    shooting: number;
+    passing: number;
+    dribbling: number;
+    defending: number;
+    physicality: number;
 };
 
 const Players: React.FC = () => {
@@ -22,10 +40,7 @@ const Players: React.FC = () => {
     const [players, setPlayers] = useState<Player[]>([]);
 
     const [isCreatePlayerOpen, setIsCreatePlayerOpen] = useState(false);
-    const [newPlayer, setNewPlayer] = useState<Player>({
-        name: "Player",
-        statistics: { goals: 0, assists: 0 },
-    });
+    const [newPlayer, setNewPlayer] = useState<Player>(defaultPlayer);
 
     useEffect(() => {
         if (!socket) return;

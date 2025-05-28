@@ -69,7 +69,7 @@
         height: 300px;
         min-height: 300px;
         background-color: #151515;
-        border: 1px solid #F5D409;
+        border: 1px solid #F5D409BB;
         border-radius: 16px;
         padding: 16px;
         font-family: Bold-Font;
@@ -126,7 +126,7 @@
             border-radius: 16px;
             padding: 24px;
             box-shadow: 0 0 10px 2px #F5D40930;
-            border: 1px solid #F5D409;
+            border: 1px solid #F5D409BB;
             width: 924px;
 
             .ant-modal-header {
@@ -169,18 +169,18 @@
 
             .ant-btn-primary {
                 background-color: #F5D409;
-                border-color: #F5D409;
+                border-color: #F5D409BB;
                 color: #1F1F1F;
 
                 &:hover {
                     background-color: #E5C308;
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                     color: #1F1F1F;
                 }
 
                 &:active {
                     background-color: #e4bc07;
-                    border-color: #e4bc07;
+                    border-color: #e4bc07BB;
                 }
             }
 
@@ -193,18 +193,18 @@
             .ant-input {
                 background-color: #292929;
                 color: #F5D409;
-                border: 1px solid #F5D409;
+                border: 1px solid #F5D409BB;
                 border-radius: 8px;
                 padding: 8px;
                 font-size: 16px;
 
                 &:focus {
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                     box-shadow: 0 0 8px 2px #F5D40970;
                 }
 
                 &:hover {
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                 }
 
                 &::placeholder {
@@ -216,19 +216,19 @@
             .ant-input-number {
                 background-color: #292929;
                 color: #F5D409;
-                border: 1px solid #F5D409;
+                border: 1px solid #F5D409BB;
                 border-radius: 8px;
                 padding: 8px;
                 font-size: 16px;
                 width: 100%;
 
                 &:focus {
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                     box-shadow: 0 0 8px 2px #F5D40970;
                 }
 
                 &:hover {
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                 }
 
                 &::placeholder {

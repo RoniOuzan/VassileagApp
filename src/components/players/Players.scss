@@ -69,7 +69,7 @@
         height: 160px;
         min-height: 160px;
         background-color: #151515;
-        border: 1px solid #F5D409;
+        border: 1px solid #F5D409BB;
         border-radius: 12px;
         padding: 16px;
         font-family: Bold-Font;
@@ -100,12 +100,12 @@
 
     &__create-player {
         .ant-modal-content {
-            background-color: #1F1F1F;
+            background-color: #202020;
             color: #F5D409;
             border-radius: 16px;
             padding: 24px;
             box-shadow: 0 0 10px 2px #F5D40930;
-            border: 1px solid #F5D409;
+            border: 1px solid #F5D409BB;
 
             .ant-modal-header {
                 background-color: #1F1F1F;
@@ -147,18 +147,18 @@
 
             .ant-btn-primary {
                 background-color: #F5D409;
-                border-color: #F5D409;
+                border-color: #F5D409BB;
                 color: #1F1F1F;
 
                 &:hover {
                     background-color: #E5C308;
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                     color: #1F1F1F;
                 }
 
                 &:active {
                     background-color: #e4bc07;
-                    border-color: #e4bc07;
+                    border-color: #e4bc07BB;
                 }
             }
 
@@ -169,20 +169,19 @@
             }
 
             .ant-input {
-                background-color: #1F1F1F;
                 color: #F5D409;
-                border: 1px solid #F5D409;
+                border: 1px solid #F5D409BB;
                 border-radius: 8px;
                 padding: 8px;
                 font-size: 16px;
 
                 &:focus {
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                     box-shadow: 0 0 8px 2px #F5D40970;
                 }
 
                 &:hover {
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                 }
 
                 &::placeholder {
@@ -194,26 +193,56 @@
             .ant-input-number {
                 background-color: #1F1F1F;
                 color: #F5D409;
-                border: 1px solid #F5D409;
+                border: 1px solid #F5D409BB;
                 border-radius: 8px;
                 padding: 8px;
                 font-size: 16px;
                 width: 100%;
 
                 &:focus {
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                     box-shadow: 0 0 8px 2px #F5D40970;
                 }
 
                 &:hover {
-                    border-color: #E5C308;
+                    border-color: #E5C308BB;
                 }
 
-                &::placeholder {
-                    color: #555555; /* Set the color of the placeholder text */
-                    opacity: 1; /* Ensure the placeholder is fully opaque */
+                .ant-input-number-input {
+                    color: #F5D409;
+
+                    &::placeholder {
+                        color: #555555;
+                    }
                 }
             }
+
+            .ant-select,
+            .ant-input-number,
+            .ant-input {
+                background-color: #292929;
+                border: 1px solid #F5D409BB;
+                color: #F5D409;
+                border-radius: 8px;
+
+                .ant-select-selector {
+                    background-color: #292929 !important;
+                    border: none !important;
+                    color: #F5D409 !important;
+                }
+
+                input {
+                    color: #F5D409;
+                    background-color: #292929;
+                }
+
+                &:hover,
+                &:focus-within {
+                    border-color: #F5D409BB;
+                    box-shadow: 0 0 5px #F5D40940;
+                }
+            }
+
         }
 
         &__teams {
@@ -237,5 +266,69 @@
                 justify-content: flex-start;
             }
         }
+    }
+}
+
+.fifa-card {
+    width: 275px;
+    height: 400px;
+    background: linear-gradient(145deg, #3A3A27, #111);
+    border: 2px solid #F5D40999;
+    border-radius: 16px;
+    color: #F5D409;
+    padding: 16px;
+    font-family: 'Bold-Font', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 0 10px 1px #F5D40956;
+    text-align: center;
+    gap: 10px;
+    margin: 10px;
+
+    &__top {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__overall {
+        font-size: 32px;
+    }
+
+    &__position {
+        font-size: 24px;
+    }
+
+    &__name {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 8px 0;
+    }
+
+    &__stats {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 14px;
+        padding: 0 8px;
+    }
+
+    &__stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 33%;
+    }
+
+    &__stat-label {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    &__stat-value {
+        font-size: 24px;
+        font-weight: bold;
     }
 }
