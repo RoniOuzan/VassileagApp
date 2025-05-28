@@ -79,19 +79,27 @@ const Games: React.FC = () => {
 
     return (
         <div className="games">
-            {games.map((game, index) => (
-                <GameComponent key={index} game={game} />
-            ))}
-            <FloatButton className="games__button" icon={<PlusOutlined />} onClick={() => setIsCreateGameOpen(true)} />
+            {games.length == 0 ?
+                <>
+                    <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", fontSize: "64px"}}>
+                        <div style={{ fontSize: "64px" }}>No game has happened yet.</div>
+                        <div style={{ fontSize: "48px", color: "#888" }}>Come back later</div>
+                    </div>
+                </>
+            :
+                games.map((game, index) => (
+                    <GameComponent key={index} game={game} />
+                ))}
+                <FloatButton className="games__button" icon={<PlusOutlined />} onClick={() => setIsCreateGameOpen(true)} />
 
-            <AddGame
-                show={isCreateGameOpen}
-                setIsCreateGameOpen={setIsCreateGameOpen}
-                games={games}
-                newGame={newGame}
-                setNewGame={setNewGame}
-                updateGames={updateGames}
-            />
+                <AddGame
+                    show={isCreateGameOpen}
+                    setIsCreateGameOpen={setIsCreateGameOpen}
+                    games={games}
+                    newGame={newGame}
+                    setNewGame={setNewGame}
+                    updateGames={updateGames}
+                />
         </div>
     );
 };

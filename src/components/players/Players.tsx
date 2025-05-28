@@ -1,9 +1,10 @@
-import { FloatButton, Modal, Input, Button, Form, InputNumber } from "antd";
+import { FloatButton } from "antd";
 import PlayerComponent from "./PlayerComponent";
 import "./Players.scss";
 import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
+import AddPlayer from "./AddPlayer";
 
 export type Player = {
     name: string;
@@ -62,70 +63,30 @@ const Players: React.FC = () => {
         }
     }
 
-    const handleAddPlayer = () => {
-        if (!newPlayer.name) return;
-
-        updatePlayers([...players, newPlayer]);
-        setIsCreatePlayerOpen(false);
-        setNewPlayer({ name: "", statistics: { goals: 0, assists: 0 } });
-    };
-
     return (
         <div className="players">
-            {players.map((player, index) => (
-                <PlayerComponent key={index} player={player} />
-            ))}
+            {players.length == 0 ? 
+                <>
+                    <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", fontSize: "64px"}}>
+                        <div style={{ fontSize: "64px" }}>No players have been added yet.</div>
+                        <div style={{ fontSize: "48px", color: "#888" }}>Come back later</div>
+                    </div>
+                </>
+            :
+                players.map((player, index) => (
+                    <PlayerComponent key={index} player={player} />
+                ))  
+            }
             <FloatButton className="players__button" icon={<PlusOutlined />} onClick={() => setIsCreatePlayerOpen(true)} />
 
-            <Modal
-                className="players__create-player"
-                title="Create Player"
-                open={isCreatePlayerOpen}
-                onCancel={() => setIsCreatePlayerOpen(false)}
-                footer={null}
-            >
-                <Form layout="vertical">
-                    <Form.Item label="Name">
-                        <Input
-                            placeholder="Name"
-                            value={newPlayer.name}
-                            onChange={(e) => setNewPlayer({ ...newPlayer, name: e.target.value })}
-                        />
-                    </Form.Item>
-
-                    <Form.Item label="Goals">
-                        <InputNumber
-                            placeholder="Goals"
-                            value={newPlayer.statistics.goals}
-                            onChange={(value) => setNewPlayer({
-                                ...newPlayer,
-                                statistics: { 
-                                    goals: value !== null ? Number(value) : 0,
-                                    assists: newPlayer.statistics.assists,
-                                }
-                            })}
-                        />
-                    </Form.Item>
-
-                    <Form.Item label="Assists">
-                        <InputNumber
-                            placeholder="Assists"
-                            value={newPlayer.statistics.assists}
-                            onChange={(value) => setNewPlayer({
-                                ...newPlayer,
-                                statistics: { 
-                                    goals: newPlayer.statistics.assists,
-                                    assists: value !== null ? Number(value) : 0,
-                                }
-                            })}
-                        />
-                    </Form.Item>
-
-                    <Button type="primary" onClick={handleAddPlayer}>
-                        Add Player
-                    </Button>
-                </Form>
-            </Modal>
+            <AddPlayer 
+                show={isCreatePlayerOpen} 
+                setIsCreatePlayerOpen={setIsCreatePlayerOpen} 
+                players={players} 
+                newPlayer={newPlayer} 
+                setNewPlayer={setNewPlayer} 
+                updatePlayers={updatePlayers}
+            />
         </div>
     );
 };
