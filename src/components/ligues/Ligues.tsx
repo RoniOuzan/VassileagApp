@@ -8,6 +8,7 @@ import LigueComponent from "./LigueComponent";
 import "./Ligues.scss";
 import { useLigue } from "../../context/LigueContext";
 import { Player } from "../../context/PlayerListContext";
+import { headerHeight } from "../../App";
 
 export const defaultLigue: Ligue = {
     name: "Ligue",
@@ -22,12 +23,13 @@ export type Ligue = {
 }
 
 interface Props {
-
 }
 
 const Ligues: React.FC<Props> = ({ }) => {
     const socket = useSocket();
-    const { setLigue } = useLigue();
+    const { ligue, setLigue } = useLigue();
+
+    const show = ligue == null;
 
     const [createLigue, setCreateLigue] = useState<boolean>(false);
     const [ligues, setLigues] = useState<Ligue[]>([]);
@@ -75,7 +77,7 @@ const Ligues: React.FC<Props> = ({ }) => {
     };
 
     return (
-        <div className="ligues">
+        <div className="ligues" style={{ left: show ? "0px" : "-100%", height: `calc(100vh)`, top: `${headerHeight}px` }}>
             {ligues.length === 0 ? (
                 <div
                     style={{
@@ -95,7 +97,9 @@ const Ligues: React.FC<Props> = ({ }) => {
                 </div>
             ) : (
                 ligues.map((ligue, index) => (
-                    <LigueComponent key={index} ligue={ligue} onClick={() => setLigue(ligue)} />
+                    <LigueComponent key={index} ligue={ligue} onClick={() => {
+                        setLigue(ligue);
+                    }} />
                 ))
             )}
 

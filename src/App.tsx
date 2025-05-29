@@ -1,4 +1,4 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Button, Layout, Menu } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
@@ -17,9 +17,8 @@ export const headerHeight = 64;
 
 const App = () => {
   const socket = useSocket();
-  const { ligue } = useLigue();
+  const { ligue, setLigue } = useLigue();
 
-  const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState('games');
 
   const isSocketConnected = socket?.readyState === WebSocket.OPEN;
@@ -47,32 +46,31 @@ const App = () => {
         <Header className='app__header' style={{ height: headerHeight }}>
           {ligue != null && <Button
             type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
+            size='large'
+            icon={<ArrowLeftOutlined/>}
+            onClick={() => setLigue(null)}
             style={{ color: "#F5D409" }}
           />}
           Football Managing App {ligue && `- ${ligue?.name}`}
         </Header>
-        {ligue == null ? 
-          <Ligues/> 
-        : 
+        <Layout>
+          <Sider className='app__sider' trigger={null}>
+            <Menu
+              className='app__sider__tabs'
+              defaultSelectedKeys={['games']}
+              onClick={({ key }) => setSelectedKey(key)} // Update selectedKey state on menu click
+              items={[
+                { key: 'games', icon: <UserOutlined />, label: 'Games' },
+                { key: 'players', icon: <VideoCameraOutlined />, label: 'Players' },
+                { key: 'statistics', icon: <UploadOutlined />, label: 'Statistics' },
+              ]}
+            />
+          </Sider>
           <Layout>
-            <Sider className='app__sider' trigger={null} collapsible collapsed={collapsed}>
-              <Menu
-                className='app__sider__tabs'
-                defaultSelectedKeys={['games']}
-                onClick={({ key }) => setSelectedKey(key)} // Update selectedKey state on menu click
-                items={[
-                  { key: 'games', icon: <UserOutlined />, label: 'Games' },
-                  { key: 'players', icon: <VideoCameraOutlined />, label: 'Players' },
-                  { key: 'statistics', icon: <UploadOutlined />, label: 'Statistics' },
-                ]}
-              />
-            </Sider>
-            <Layout>
-              {renderContent()}
-            </Layout>
-          </Layout >}
+            {renderContent()}
+          </Layout>
+        </Layout >
+        <Ligues /> 
       </Layout>
     </ThemeProvider>
   );
