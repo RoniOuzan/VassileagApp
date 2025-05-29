@@ -1,14 +1,13 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 import { useEffect, useState } from "react";
+import { useLigue } from "../../context/LigueContext";
+import { Player } from "../../context/PlayerListContext";
 import { useSocket } from "../../context/SocketContext";
 import { Game } from "../games/Games";
 import AddLigue from "./AddLigue";
 import LigueComponent from "./LigueComponent";
 import "./Ligues.scss";
-import { useLigue } from "../../context/LigueContext";
-import { Player } from "../../context/PlayerListContext";
-import { headerHeight } from "../../App";
 
 export const defaultLigue: Ligue = {
     name: "Ligue",
@@ -27,9 +26,7 @@ interface Props {
 
 const Ligues: React.FC<Props> = ({ }) => {
     const socket = useSocket();
-    const { ligue, setLigue } = useLigue();
-
-    const show = ligue == null;
+    const { setLigue } = useLigue();
 
     const [createLigue, setCreateLigue] = useState<boolean>(false);
     const [ligues, setLigues] = useState<Ligue[]>([]);
@@ -77,7 +74,7 @@ const Ligues: React.FC<Props> = ({ }) => {
     };
 
     return (
-        <div className="ligues" style={{ left: show ? "0px" : "-100%", height: `calc(100vh)`, top: `${headerHeight}px` }}>
+        <div className="ligues">
             {ligues.length === 0 ? (
                 <div
                     style={{

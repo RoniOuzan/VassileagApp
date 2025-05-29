@@ -1,4 +1,4 @@
-import { ArrowLeftOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, BarChartOutlined, ScheduleOutlined, TeamOutlined } from '@ant-design/icons';
 import { Button, Layout, Menu } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
@@ -53,24 +53,26 @@ const App = () => {
           />}
           Football Managing App {ligue && `- ${ligue?.name}`}
         </Header>
-        <Layout>
-          <Sider className='app__sider' trigger={null}>
-            <Menu
-              className='app__sider__tabs'
-              defaultSelectedKeys={['games']}
-              onClick={({ key }) => setSelectedKey(key)} // Update selectedKey state on menu click
-              items={[
-                { key: 'games', icon: <UserOutlined />, label: 'Games' },
-                { key: 'players', icon: <VideoCameraOutlined />, label: 'Players' },
-                { key: 'statistics', icon: <UploadOutlined />, label: 'Statistics' },
-              ]}
-            />
-          </Sider>
+        {ligue == null ? 
+          <Ligues/> 
+        : 
           <Layout>
-            {renderContent()}
-          </Layout>
-        </Layout >
-        <Ligues /> 
+            <Sider className='app__sider' trigger={null}>
+              <Menu
+                className='app__sider__tabs'
+                defaultSelectedKeys={['games']}
+                onClick={({ key }) => setSelectedKey(key)}
+                items={[
+                  { key: 'games', icon: <ScheduleOutlined />, label: 'Games' },
+                  { key: 'players', icon: <TeamOutlined />, label: 'Players' },
+                  { key: 'statistics', icon: <BarChartOutlined />, label: 'Statistics' },
+                ]}
+              />
+            </Sider>
+            <Layout>
+              {renderContent()}
+            </Layout>
+          </Layout >}
       </Layout>
     </ThemeProvider>
   );

@@ -6,23 +6,6 @@ export type ColorTheme = {
   widgetBackground: string;
 };
 
-export const Colors: Record<string, ColorTheme> = {
-  dark: {
-    name: "dark",
-    backgroundPrimary: "#181818",
-    backgroundSecondary: "#1F1F1F",
-    border: "#2B2B2B",
-    widgetBackground: "#404040",
-  },
-  light: {
-    name: "light",
-    backgroundPrimary: "#FFFFFF",
-    backgroundSecondary: "#F9F9F9",
-    border: "#EEEEEE",
-    widgetBackground: "#E5E5E5",
-  },
-};
-
 export const darker = (color: string, percent: number) : string => {
   color = color.replace(/^#/, '');
 

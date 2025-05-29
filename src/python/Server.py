@@ -73,13 +73,11 @@ async def handler(websocket):
                     "type": "games_list",
                     "games": games
                 }
-                await websocket.send(json.dumps(response))
 
             elif msg_type == "update_games":
                 await update_games(data.get("games", []))
                 print("Updated games list")
                 response = {"type": "success", "message": "Games list updated"}
-                await websocket.send(json.dumps(response))
 
             # Players
             elif msg_type == "get_players":
@@ -88,13 +86,11 @@ async def handler(websocket):
                     "type": "players_list",
                     "players": players
                 }
-                await websocket.send(json.dumps(response))
 
             elif msg_type == "update_players":
                 await update_players(data.get("players", []))
                 print("Updated players list")
                 response = {"type": "success", "message": "Players list updated"}
-                await websocket.send(json.dumps(response))
 
             # Ligues
             elif msg_type == "get_ligues":
@@ -103,18 +99,16 @@ async def handler(websocket):
                     "type": "ligues_list",
                     "ligues": ligues
                 }
-                await websocket.send(json.dumps(response))
 
             elif msg_type == "update_ligues":
                 await update_ligues(data.get("ligues", []))
                 print("Updated ligues list")
                 response = {"type": "success", "message": "Ligues list updated"}
-                await websocket.send(json.dumps(response))
 
             else:
                 response = {"type": "error", "message": "Unknown message type"}
-                await websocket.send(json.dumps(response))
 
+            await websocket.send(json.dumps(response))
     except websockets.ConnectionClosed:
         print("Client disconnected")
 

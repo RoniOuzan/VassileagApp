@@ -11,7 +11,7 @@
     color: #F5D409;
     background-color: #111111;
     font-family: Bold-Font;
-    font-size: 32px;
+    font-size: 24px;
     padding: 4px;
     display: flex;
     align-items: center;
@@ -69,5 +69,35 @@
         color: #F5D409; // Icon hover and selected state
       }
     }
+  }
+}
+
+.custom-outlined-menu {
+  .ant-menu-item {
+    margin: 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    padding: 10px 16px;
+
+    &.ant-menu-item-selected {
+      border-color: #F5D409;
+      background-color: rgba(245, 212, 9, 0.1);
+      color: #F5D409;
+    }
+
+    &:hover {
+      border-color: #F5D409;
+      background-color: rgba(245, 212, 9, 0.05);
+      color: #F5D409;
+    }
+
+    .ant-menu-title-content {
+      font-weight: 500;
+    }
+  }
+
+  .ant-menu-item-icon {
+    color: #F5D409;
   }
 }
