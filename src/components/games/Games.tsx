@@ -6,7 +6,7 @@ import { useSocket } from "../../context/SocketContext";
 import AddGame from "./AddGame";
 import GameComponent from "./GameComponent";
 import "./Games.scss";
-import { players } from "../players/Players";
+import { usePlayerList } from "../../context/PlayerListContext";
 
 export type PlayedPlayer = {
     name: string;
@@ -29,6 +29,7 @@ type MongoGame = Game & { _id?: string };
 
 const Games: React.FC = () => {
     const socket = useSocket();
+    const { playerList } = usePlayerList();
     
     const [games, setGames] = useState<Game[]>([]);
 
@@ -106,7 +107,7 @@ const Games: React.FC = () => {
                     newGame={newGame}
                     setNewGame={setNewGame}
                     updateGames={updateGames}
-                    playersList={players.map(p => p.name)}
+                    playersList={playerList.map(p => p.name)}
                 />
         </div>
     );

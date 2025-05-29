@@ -1,202 +1,105 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
+import { useEffect, useState } from "react";
+import {
+    defaultPlayer,
+    Player,
+    usePlayerList,
+} from "../../context/PlayerListContext";
+import AddPlayer from "./AddPlayer";
 import PlayerComponent from "./PlayerComponent";
 import "./Players.scss";
-import { PlusOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
-import { useSocket } from "../../context/SocketContext";
-import AddPlayer from "./AddPlayer";
-
-export let players: Player[] = [];
-
-export const defaultPlayer: Player = {
-  name: "Player",
-  position: "ST",
-  ratings: {
-    overall: 0,
-    pace: 0,
-    shooting: 0,
-    passing: 0,
-    dribbling: 0,
-    defending: 0,
-    physicality: 0,
-  },
-};
-
-export const ratingTypes = [
-  "pace",
-  "shooting",
-  "passing",
-  "dribbling",
-  "defending",
-  "physicality",
-];
-export const positionOptions: Position[] = [
-  "ST",
-  "LW",
-  "RW",
-  "LM",
-  "RM",
-  "CAM",
-  "CM",
-  "CDM",
-  "LB",
-  "RB",
-  "CB",
-  "GK",
-];
-
-export type Position =
-  | "ST"
-  | "LW"
-  | "RW"
-  | "LM"
-  | "RM"
-  | "CAM"
-  | "CM"
-  | "CDM"
-  | "LB"
-  | "RB"
-  | "CB"
-  | "GK";
-
-export type Player = {
-  name: string;
-  position: Position;
-  ratings: Ratings;
-};
-
-export type Ratings = {
-  overall: number;
-  pace: number;
-  shooting: number;
-  passing: number;
-  dribbling: number;
-  defending: number;
-  physicality: number;
-};
 
 const Players: React.FC = () => {
-  const socket = useSocket();
+    const { playerList, updatePlayers } = usePlayerList();
 
-  const [hasPlayers, setHasPlayers] = useState(false);
+    const [hasPlayers, setHasPlayers] = useState(false);
+    const [createPlayerMenu, setCreatePlayerMenu] = useState(false);
+    const [newPlayer, setNewPlayer] = useState<Player>(defaultPlayer);
 
-  const [createPlayerMenu, setCreatePlayerMenu] = useState<boolean>(false);
-  const [newPlayer, setNewPlayer] = useState<Player>(defaultPlayer);
+    useEffect(() => {
+        setHasPlayers(playerList.length > 0);
+    }, [playerList]);
 
-  useEffect(() => {
-    if (!socket) return;
+    const setPlayer = (player: Player) => {
+        if (Object.values(player.ratings).every((val) => val === -1)) {
+            updatePlayers(
+                playerList.filter(
+                    (p) => p.name.toLowerCase() !== player.name.toLowerCase()
+                )
+            );
+            return;
+        }
 
-    const handleMessage = (event: MessageEvent) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "players_list") {
-        players = data.players;
-        setHasPlayers(true);
-      }
+        const updatedPlayers = [...playerList];
+        const index = updatedPlayers.findIndex((p) => p.name === player.name);
+
+        if (index !== -1) {
+            updatedPlayers[index] = player;
+        } else {
+            updatedPlayers.push(player);
+        }
+
+        updatePlayers(updatedPlayers);
     };
 
-    socket.addEventListener("message", handleMessage);
+    return (
+        <div className="players">
+            {!hasPlayers ? (
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                        height: "100%",
+                        fontSize: "48px",
+                        color: "#aaa",
+                    }}
+                >
+                    <div>Loading players...</div>
+                </div>
+            ) : playerList.length === 0 ? (
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                        height: "100%",
+                        fontSize: "64px",
+                    }}
+                >
+                    <div style={{ fontSize: "64px" }}>
+                        No players have been added yet.
+                    </div>
+                    <div style={{ fontSize: "48px", color: "#888" }}>Come back later</div>
+                </div>
+            ) : (
+                playerList.map((player, index) => {
+                    console.log(player);
+                    
+                    return <PlayerComponent key={index} player={player} setPlayer={setPlayer} />;
+                })
+            )}
 
-    if (socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: "get_players" }));
-    } else {
-      socket.addEventListener(
-        "open",
-        () => {
-          socket.send(JSON.stringify({ type: "get_players" }));
-        },
-        { once: true }
-      );
-    }
+            <FloatButton
+                className="players__button"
+                icon={<PlusOutlined />}
+                onClick={() => setCreatePlayerMenu(true)}
+            />
 
-    return () => {
-      socket.removeEventListener("message", handleMessage);
-    };
-  }, [socket]);
-
-  const setPlayer = (player: Player) => {
-    if (Object.entries(player.ratings).every(value => value[1] == -1)) { // delete
-        updatePlayers([...players.filter(p => p.name.toLowerCase() !== player.name.toLowerCase())])
-        return;
-    }
-
-    const updatedPlayers = [...players];
-    const index = updatedPlayers.findIndex((p) => p.name === player.name);
-
-    if (index !== -1) {
-      updatedPlayers[index] = player;
-    }
-
-    updatePlayers(updatedPlayers);
-  };
-
-  const updatePlayers = (p: Player[]) => {
-    players = p;
-
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(
-        JSON.stringify({
-          type: "update_players",
-          players: p,
-        })
-      );
-    }
-  };
-
-  return (
-    <div className="players">
-      {!hasPlayers ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "100%",
-            fontSize: "48px",
-            color: "#aaa",
-          }}
-        >
-          <div>Loading players...</div>
+            <AddPlayer
+                show={createPlayerMenu}
+                setShow={setCreatePlayerMenu}
+                newPlayer={newPlayer}
+                setNewPlayer={setNewPlayer}
+                updatePlayers={updatePlayers}
+            />
         </div>
-      ) : players.length === 0 ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "100%",
-            fontSize: "64px",
-          }}
-        >
-          <div style={{ fontSize: "64px" }}>
-            No players have been added yet.
-          </div>
-          <div style={{ fontSize: "48px", color: "#888" }}>Come back later</div>
-        </div>
-      ) : (
-        players.map((_player, index) => (
-          <PlayerComponent key={index} index={index} setPlayer={setPlayer} />
-        ))
-      )}
-
-      <FloatButton
-        className="players__button"
-        icon={<PlusOutlined />}
-        onClick={() => setCreatePlayerMenu(true)}
-      />
-
-      <AddPlayer
-        show={createPlayerMenu}
-        setShow={setCreatePlayerMenu}
-        newPlayer={newPlayer}
-        setNewPlayer={setNewPlayer}
-        updatePlayers={updatePlayers}
-      />
-    </div>
-  );
+    );
 };
 
 export default Players;

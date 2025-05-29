@@ -1,0 +1,133 @@
+.ligues {
+    background-color: #1F1F1F;
+    color: #F5D409;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    padding: 32px;
+    gap: 20px;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    scroll-behavior: smooth;
+    user-select: none;
+
+    &__select {
+        height: 6%;
+        text-align: center;
+        font-size: 300%;
+    }
+
+    &__button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #F5D409;
+        color: #1F1F1F;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 10px 2px #F5D4097F;
+        font-size: 200%;
+        font-family: Bold-Font;
+        cursor: pointer;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+        border: none;
+        outline: none;
+
+        &:hover {
+            box-shadow: 0 0 10px 4px #F5D409B2;
+            transform: scale(1.1);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+.ligue-component {
+    width: 15%;
+    min-width: 250px;
+    height: 360px;
+    background: radial-gradient(ellipse at center, #111, #F5D4090F);
+    border: 2px solid #F5D40999;
+    border-radius: 16px;
+    color: #F5D409;
+    padding: 16px;
+    font-family: 'Bold-Font', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 0 10px 1px #F5D40956;
+    text-align: center;
+    gap: 10px;
+    margin: 10px;
+    animation: all 1s;
+    font-size: 40px;
+
+    &__top {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__overall {
+        font-size: 32px;
+    }
+
+    &__position {
+        font-size: 24px;
+    }
+
+    &__name {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 8px 0;
+    }
+
+    &__stats {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 14px;
+        padding: 0 8px;
+    }
+
+    &__stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 33%;
+    }
+
+    &__stat-label {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    &__stat-value {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    &:hover {
+        transform: scale(1.01);
+    }
+
+    &:active {
+        transform: scale(0.99);
+    }
+}

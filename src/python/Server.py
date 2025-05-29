@@ -7,6 +7,7 @@ client = AsyncIOMotorClient("mongodb://localhost:27017")
 db = client["vassileage"]
 games_collection = db["games"]
 players_collection = db["players"]
+ligues_collection = db["ligues"]
 
 
 async def get_all_games():
@@ -17,6 +18,11 @@ async def get_all_games():
         games.append(game)
     return games
 
+async def update_games(new_games):
+    await games_collection.delete_many({})
+    if new_games:
+        await games_collection.insert_many(new_games)
+
 
 async def get_all_players():
     players_cursor = players_collection.find({})
@@ -26,17 +32,24 @@ async def get_all_players():
         players.append(player)
     return players
 
-
-async def update_games(new_games):
-    await games_collection.delete_many({})
-    if new_games:
-        await games_collection.insert_many(new_games)
-
-
 async def update_players(new_players):
     await players_collection.delete_many({})
     if new_players:
         await players_collection.insert_many(new_players)
+
+
+async def get_all_ligues():
+    ligues_cursor = ligues_collection.find({})
+    ligues = []
+    async for ligue in ligues_cursor:
+        ligue["_id"] = str(ligue["_id"])
+        ligues.append(ligue)
+    return ligues
+
+async def update_ligues(new_ligues):
+    await ligues_collection.delete_many({})
+    if new_ligues:
+        await ligues_collection.insert_many(new_ligues)
 
 
 async def handler(websocket):
@@ -53,6 +66,7 @@ async def handler(websocket):
 
             msg_type = data.get("type")
 
+            # Games
             if msg_type == "get_games":
                 games = await get_all_games()
                 response = {
@@ -67,6 +81,7 @@ async def handler(websocket):
                 response = {"type": "success", "message": "Games list updated"}
                 await websocket.send(json.dumps(response))
 
+            # Players
             elif msg_type == "get_players":
                 players = await get_all_players()
                 response = {
@@ -79,6 +94,21 @@ async def handler(websocket):
                 await update_players(data.get("players", []))
                 print("Updated players list")
                 response = {"type": "success", "message": "Players list updated"}
+                await websocket.send(json.dumps(response))
+
+            # Ligues
+            elif msg_type == "get_ligues":
+                ligues = await get_all_ligues()
+                response = {
+                    "type": "ligues_list",
+                    "ligues": ligues
+                }
+                await websocket.send(json.dumps(response))
+
+            elif msg_type == "update_ligues":
+                await update_ligues(data.get("ligues", []))
+                print("Updated ligues list")
+                response = {"type": "success", "message": "Ligues list updated"}
                 await websocket.send(json.dumps(response))
 
             else:

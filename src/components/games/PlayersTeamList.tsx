@@ -1,6 +1,6 @@
 import { Button, Input, Select, Space } from "antd";
-import { Ratings } from "../players/Players";
 import { Game, PlayedPlayer } from "./Games";
+import { Ratings } from "../../context/PlayerListContext";
 
 interface Props {
   team: "team1" | "team2";
