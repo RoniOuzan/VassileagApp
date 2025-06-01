@@ -36,6 +36,7 @@ def handle_post(handler):
             handler.end_headers()
             return
 
+        print(data)
         # Handle different types of requests:
         msg_type = data.get("type")
         if msg_type == "ping":
@@ -53,6 +54,7 @@ def handle_post(handler):
             response = {"type": "ligues_list", "ligues": ligues}
             encrypted_response = encrypt(json.dumps(response))
 
+            print(response)
             handler.send_response(200)
             handler.send_header('Content-Type', 'text/plain')
             add_cors_headers(handler)

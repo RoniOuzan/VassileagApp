@@ -23,13 +23,13 @@ export async function apiClient<T = any>(type: string, payload: Record<string, a
             throw new Error(`Server returned status ${response.status}`);
         }
 
-        const encryptedResponse = await response.json();
+        const encryptedResponse = await response.text();
 
         if (!encryptedResponse) {
             throw new Error("No encrypted data in server response");
         }
 
-        return decrypt(encryptedResponse) as T;
+        return JSON.parse(decrypt(encryptedResponse));
     } catch (err) {
         console.error("API client error:", err);
         throw err;
