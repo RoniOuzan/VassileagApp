@@ -24,10 +24,6 @@ const App = () => {
   const isSocketConnected = socket?.readyState === WebSocket.OPEN;
 
   const renderContent = () => {
-    if (!isSocketConnected) {
-      return <NoConnection />;
-    }
-
     switch (selectedKey) {
       case 'games':
         return <Games />;
@@ -53,26 +49,31 @@ const App = () => {
           />}
           Football Managing App {ligue && `- ${ligue?.name}`}
         </Header>
-        {ligue == null ? 
-          <Ligues/> 
-        : 
-          <Layout>
-            <Sider className='app__sider' trigger={null}>
-              <Menu
-                className='app__sider__tabs'
-                defaultSelectedKeys={['games']}
-                onClick={({ key }) => setSelectedKey(key)}
-                items={[
-                  { key: 'games', icon: <ScheduleOutlined />, label: 'Games' },
-                  { key: 'players', icon: <TeamOutlined />, label: 'Players' },
-                  { key: 'statistics', icon: <BarChartOutlined />, label: 'Statistics' },
-                ]}
-              />
-            </Sider>
+        {!isSocketConnected ? (
+          <NoConnection />
+        ) : (
+          ligue == null ? (
+            <Ligues />
+          ) : (
             <Layout>
-              {renderContent()}
+              <Sider className='app__sider' trigger={null}>
+                <Menu
+                  className='app__sider__tabs'
+                  defaultSelectedKeys={['games']}
+                  onClick={({ key }) => setSelectedKey(key)}
+                  items={[
+                    { key: 'games', icon: <ScheduleOutlined />, label: 'Games' },
+                    { key: 'players', icon: <TeamOutlined />, label: 'Players' },
+                    { key: 'statistics', icon: <BarChartOutlined />, label: 'Statistics' },
+                  ]}
+                />
+              </Sider>
+              <Layout>
+                {renderContent()}
+              </Layout>
             </Layout>
-          </Layout >}
+          )
+        )}
       </Layout>
     </ThemeProvider>
   );

@@ -2,34 +2,19 @@ import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 import { useEffect, useState } from "react";
 import { useLigue } from "../../context/LigueContext";
-import { Player } from "../../context/PlayerListContext";
 import { useSocket } from "../../context/SocketContext";
-import { Game } from "../games/Games";
 import AddLigue from "./AddLigue";
 import LigueComponent from "./LigueComponent";
 import "./Ligues.scss";
-
-export const defaultLigue: Ligue = {
-    name: "Ligue",
-    players: [],
-    games: [],
-}
-
-export type Ligue = {
-    name: string;
-    players: Player[];
-    games: Game[];
-}
 
 interface Props {
 }
 
 const Ligues: React.FC<Props> = ({ }) => {
     const socket = useSocket();
-    const { setLigue } = useLigue();
+    const { setLigue, ligues, setLigues } = useLigue();
 
     const [createLigue, setCreateLigue] = useState<boolean>(false);
-    const [ligues, setLigues] = useState<Ligue[]>([]);
 
     useEffect(() => {
         if (!socket) return;
@@ -59,19 +44,6 @@ const Ligues: React.FC<Props> = ({ }) => {
             socket.removeEventListener("message", handleMessage);
         };
     }, [socket]);
-
-    const updateLigues = (ligues: Ligue[]) => {
-        setLigues(ligues);
-    
-        if (socket && socket.readyState === WebSocket.OPEN) {
-            socket.send(
-                JSON.stringify({
-                type: "update_ligues",
-                ligues: ligues,
-                })
-            );
-        }
-    };
 
     return (
         <div className="ligues">
@@ -108,9 +80,7 @@ const Ligues: React.FC<Props> = ({ }) => {
 
             <AddLigue 
                 show={createLigue} 
-                ligueList={ligues}
                 setShow={setCreateLigue} 
-                updateLigues={updateLigues} 
             />
         </div>
     );

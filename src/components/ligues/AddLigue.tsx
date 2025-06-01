@@ -1,7 +1,7 @@
 import { Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import ErrorMessage from "../other/ErrorMessage";
-import { defaultLigue, Ligue } from "./Ligues";
+import { defaultLigue, Ligue, useLigue } from "../../context/LigueContext";
 
 const errorMessages = [
     "This ligue's name is not valid!",
@@ -10,26 +10,26 @@ const errorMessages = [
 
 interface Props {
     show: boolean;
-    ligueList: Ligue[];
     setShow: (value: boolean) => void;
-    updateLigues: (ligues: Ligue[]) => void;
 }
 
-const AddLigue: React.FC<Props> = ({ show, ligueList, setShow, updateLigues }) => {
-    const [errors, setErrors] = useState<boolean[]>(Array(1).fill(false));
+const AddLigue: React.FC<Props> = ({ show, setShow }) => {
+    const { ligues, updateLigues } = useLigue();
+
+    const [errors, setErrors] = useState<boolean[]>(Array(2).fill(false));
     const [newLigue, setNewLigue] = useState<Ligue>(defaultLigue);
 
     const handleAddLigue = () => {
         const conditions = [
             !newLigue.name,
-            ligueList.some(l => l.name.toLowerCase() == newLigue.name.toLowerCase())
+            ligues.some(l => l.name.toLowerCase() == newLigue.name.toLowerCase())
         ];
         if (conditions.some(c => c)) {
             setErrors(conditions);
             return;
         }
 
-        updateLigues([...ligueList, newLigue]);
+        updateLigues([...ligues, newLigue]);
         setShow(false);
         setNewLigue(defaultLigue);
     };
