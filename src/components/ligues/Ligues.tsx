@@ -1,8 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLigue } from "../../context/LigueContext";
-import { useSocket } from "../../context/SocketContext";
 import AddLigue from "./AddLigue";
 import LigueComponent from "./LigueComponent";
 import "./Ligues.scss";
@@ -11,39 +10,9 @@ interface Props {
 }
 
 const Ligues: React.FC<Props> = ({ }) => {
-    const socket = useSocket();
-    const { setLigue, ligues, setLigues } = useLigue();
+    const { setLigue, ligues } = useLigue();
 
     const [createLigue, setCreateLigue] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (!socket) return;
-    
-        const handleMessage = (event: MessageEvent) => {
-            const data = JSON.parse(event.data);
-            if (data.type === "ligues_list" && data.ligues) {
-                setLigues(data.ligues);
-            }
-        };
-    
-        socket.addEventListener("message", handleMessage);
-    
-        if (socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify({ type: "get_ligues" }));
-        } else {
-            socket.addEventListener(
-                "open",
-                () => {
-                    socket.send(JSON.stringify({ type: "get_ligues" }));
-                },
-                { once: true }
-            );
-        }
-    
-        return () => {
-            socket.removeEventListener("message", handleMessage);
-        };
-    }, [socket]);
 
     return (
         <div className="ligues">
