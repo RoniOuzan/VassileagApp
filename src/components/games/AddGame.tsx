@@ -3,6 +3,7 @@ import { Game, PlayedPlayer } from "./Games";
 import { useEffect, useState } from "react";
 import ErrorMessage from "../other/ErrorMessage";
 import PlayersTeamList from "./PlayersTeamList";
+import { useLigue } from "../../context/LigueContext";
 
 const errorMessages = [
     "The date is not valid!",
@@ -13,22 +14,23 @@ const errorMessages = [
 interface Props {
     show: boolean;
     setIsCreateGameOpen: (value: boolean) => void;
-    games: Game[];
     newGame: Game;
     setNewGame: (game: Game) => void;
-    updateGames: (games: Game[]) => void;
-    playersList: string[]; // List of all possible player names
 }
 
 const AddGame: React.FC<Props> = ({
     show,
     setIsCreateGameOpen,
-    games,
     newGame,
     setNewGame,
-    updateGames,
-    playersList,
 }) => {
+    const { ligue, updateGame } = useLigue();
+
+    if (!ligue) {
+        return <div/>;
+    }
+
+    const playerList = ligue.players.map(p => p.name);
     const [errors, setErrors] = useState<boolean[]>(Array(5).fill(false));
     const [playedPlayers1, setPlayedPlayers1] = useState<PlayedPlayer[]>([]);
     const [playedPlayers2, setPlayedPlayers2] = useState<PlayedPlayer[]>([]);
@@ -58,9 +60,10 @@ const AddGame: React.FC<Props> = ({
             setErrors(conditions);
             return;
         }
-        updateGames([...games, newGame]);
+        updateGame(newGame);
         setIsCreateGameOpen(false);
         setNewGame({
+            id: crypto.randomUUID(),
             date: "",
             team1: { goals: 0, players: [] },
             team2: { goals: 0, players: [] },
@@ -129,7 +132,7 @@ const AddGame: React.FC<Props> = ({
                         team={"team1"}
                         newGame={newGame}
                         setNewGame={setNewGame}
-                        playersList={playersList}
+                        playerList={playerList}
                         isPlayerNotListed={isPlayerNotListed}
                         setPlayedPlayers={setPlayedPlayers1}
                     />
@@ -137,7 +140,7 @@ const AddGame: React.FC<Props> = ({
                         team={"team2"}
                         newGame={newGame}
                         setNewGame={setNewGame}
-                        playersList={playersList}
+                        playerList={playerList}
                         isPlayerNotListed={isPlayerNotListed}
                         setPlayedPlayers={setPlayedPlayers2}
                     />

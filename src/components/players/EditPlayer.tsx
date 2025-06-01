@@ -1,12 +1,8 @@
 import { Button, Form, InputNumber, Modal, Select } from "antd";
 import { useState } from "react";
-import {
-    Player,
-    positionOptions,
-    Ratings,
-    ratingTypes
-} from "../../context/PlayerListContext";
 import ErrorMessage from "../other/ErrorMessage";
+import { Player, Ratings, positionOptions, ratingTypes } from "./Players";
+import { useLigue } from "../../context/LigueContext";
 
 export type MenuState = "create" | "edit" | "close";
 
@@ -20,15 +16,15 @@ interface Props {
   menuState: boolean;
   setMenuState: (value: boolean) => void;
   player: Player;
-  setPlayer: (player: Player) => void;
 }
 
 const EditPlayer: React.FC<Props> = ({
   menuState,
   setMenuState,
   player,
-  setPlayer,
 }) => {
+  const { updatePlayer } = useLigue();
+
   const [errors, setErrors] = useState<boolean[]>(Array(4).fill(false));
   const [editingPlayer, setEditingPlayer] = useState<Player>(player);
 
@@ -54,12 +50,12 @@ const EditPlayer: React.FC<Props> = ({
       return;
     }
 
-    setPlayer(editingPlayer);
+    updatePlayer(editingPlayer);
     setMenuState(false);
   };
 
   const handleDeletePlayer = () => {
-    setPlayer({
+    updatePlayer({
       ...player,
       ratings: {
         overall: -1,

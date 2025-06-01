@@ -5,37 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 client = AsyncIOMotorClient("mongodb://localhost:27017")
 db = client["vassileage"]
-games_collection = db["games"]
-players_collection = db["players"]
 ligues_collection = db["ligues"]
-
-
-async def get_all_games():
-    games_cursor = games_collection.find({})
-    games = []
-    async for game in games_cursor:
-        game["_id"] = str(game["_id"])  # Convert ObjectId to string
-        games.append(game)
-    return games
-
-async def update_games(new_games):
-    await games_collection.delete_many({})
-    if new_games:
-        await games_collection.insert_many(new_games)
-
-
-async def get_all_players():
-    players_cursor = players_collection.find({})
-    players = []
-    async for player in players_cursor:
-        player["_id"] = str(player["_id"])
-        players.append(player)
-    return players
-
-async def update_players(new_players):
-    await players_collection.delete_many({})
-    if new_players:
-        await players_collection.insert_many(new_players)
 
 
 async def get_all_ligues():
@@ -66,34 +36,8 @@ async def handler(websocket):
 
             msg_type = data.get("type")
 
-            # Games
-            if msg_type == "get_games":
-                games = await get_all_games()
-                response = {
-                    "type": "games_list",
-                    "games": games
-                }
-
-            elif msg_type == "update_games":
-                await update_games(data.get("games", []))
-                print("Updated games list")
-                response = {"type": "success", "message": "Games list updated"}
-
-            # Players
-            elif msg_type == "get_players":
-                players = await get_all_players()
-                response = {
-                    "type": "players_list",
-                    "players": players
-                }
-
-            elif msg_type == "update_players":
-                await update_players(data.get("players", []))
-                print("Updated players list")
-                response = {"type": "success", "message": "Players list updated"}
-
             # Ligues
-            elif msg_type == "get_ligues":
+            if msg_type == "get_ligues":
                 ligues = await get_all_ligues()
                 response = {
                     "type": "ligues_list",

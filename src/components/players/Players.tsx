@@ -1,66 +1,83 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
-import { useEffect, useState } from "react";
-import {
-    defaultPlayer,
-    Player,
-    usePlayerList,
-} from "../../context/PlayerListContext";
+import { useState } from "react";
+import { useLigue } from "../../context/LigueContext";
 import AddPlayer from "./AddPlayer";
 import PlayerComponent from "./PlayerComponent";
 import "./Players.scss";
 
-const Players: React.FC = () => {
-    const { playerList, updatePlayers } = usePlayerList();
+export const defaultPlayer: Player = {
+    name: "Player",
+    position: "ST",
+    ratings: {
+        overall: 0,
+        pace: 0,
+        shooting: 0,
+        passing: 0,
+        dribbling: 0,
+        defending: 0,
+        physicality: 0,
+    },
+};
 
-    const [hasPlayers, setHasPlayers] = useState(false);
+export const ratingTypes = [
+  "pace",
+  "shooting",
+  "passing",
+  "dribbling",
+  "defending",
+  "physicality",
+];
+
+export const positionOptions: Position[] = [
+  "ST",
+  "LW",
+  "RW",
+  "LM",
+  "RM",
+  "CAM",
+  "CM",
+  "CDM",
+  "LB",
+  "RB",
+  "CB",
+  "GK",
+];
+
+export type Position =
+    | "ST" | "LW" | "RW" | "LM" | "RM" | "CAM" | "CM"
+    | "CDM" | "LB" | "RB" | "CB" | "GK";
+
+export type Ratings = {
+    overall: number;
+    pace: number;
+    shooting: number;
+    passing: number;
+    dribbling: number;
+    defending: number;
+    physicality: number;
+};
+
+export type Player = {
+    name: string;
+    position: Position;
+    ratings: Ratings;
+};
+
+const Players: React.FC = () => {
+    const { ligue } = useLigue();
+
+    if (!ligue) {
+        return <div />;
+    }
+
+    const playerList = ligue.players;
     const [createPlayerMenu, setCreatePlayerMenu] = useState(false);
     const [newPlayer, setNewPlayer] = useState<Player>(defaultPlayer);
 
-    useEffect(() => {
-        setHasPlayers(playerList.length > 0);
-    }, [playerList]);
-
-    const setPlayer = (player: Player) => {
-        if (Object.values(player.ratings).every((val) => val === -1)) {
-            updatePlayers(
-                playerList.filter(
-                    (p) => p.name.toLowerCase() !== player.name.toLowerCase()
-                )
-            );
-            return;
-        }
-
-        const updatedPlayers = [...playerList];
-        const index = updatedPlayers.findIndex((p) => p.name === player.name);
-
-        if (index !== -1) {
-            updatedPlayers[index] = player;
-        } else {
-            updatedPlayers.push(player);
-        }
-
-        updatePlayers(updatedPlayers);
-    };
-
     return (
         <div className="players">
-            {!hasPlayers ? (
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "100%",
-                        height: "100%",
-                        fontSize: "48px",
-                        color: "#aaa",
-                    }}
-                >
-                    <div>Loading players...</div>
-                </div>
-            ) : playerList.length === 0 ? (
+            {playerList.length === 0 ? (
                 <div
                     style={{
                         display: "flex",
@@ -78,11 +95,7 @@ const Players: React.FC = () => {
                     <div style={{ fontSize: "48px", color: "#888" }}>Come back later</div>
                 </div>
             ) : (
-                playerList.map((player, index) => {
-                    console.log(player);
-                    
-                    return <PlayerComponent key={index} player={player} setPlayer={setPlayer} />;
-                })
+                playerList.map((player, index) => <PlayerComponent key={index} player={player} />)
             )}
 
             <FloatButton
@@ -96,7 +109,6 @@ const Players: React.FC = () => {
                 setShow={setCreatePlayerMenu}
                 newPlayer={newPlayer}
                 setNewPlayer={setNewPlayer}
-                updatePlayers={updatePlayers}
             />
         </div>
     );

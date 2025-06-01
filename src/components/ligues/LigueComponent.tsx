@@ -1,4 +1,4 @@
-import { Ligue } from "./Ligues";
+import { Ligue } from "../../context/LigueContext";
 import "./Ligues.scss";
 
 interface Props {

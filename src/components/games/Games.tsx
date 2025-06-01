@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
-import { useEffect, useState } from "react";
-import { useSocket } from "../../context/SocketContext";
+import { useState } from "react";
+import { useLigue } from "../../context/LigueContext";
 import AddGame from "./AddGame";
 import GameComponent from "./GameComponent";
 import "./Games.scss";
-import { usePlayerList } from "../../context/PlayerListContext";
 
 export type PlayedPlayer = {
   name: string;
@@ -27,11 +25,13 @@ export type Team = {
 };
 
 const Games: React.FC = () => {
-  const socket = useSocket();
-  const { playerList } = usePlayerList();
+  const { ligue } = useLigue();
 
-  const [games, setGames] = useState<Game[]>([]);
+  if (!ligue) {
+    return <div/>;
+  }
 
+  const games = ligue.games;
   const [isCreateGameOpen, setIsCreateGameOpen] = useState(false);
   const [newGame, setNewGame] = useState<Game>({
     id: crypto.randomUUID(),
@@ -39,52 +39,6 @@ const Games: React.FC = () => {
     team1: { goals: 0, players: [{ name: "", goals: 0, assists: 0 }] },
     team2: { goals: 0, players: [{ name: "", goals: 0, assists: 0 }] },
   });
-
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleMessage = (event: MessageEvent) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "games_list") {
-        const cleanedGames: Game[] = data.games.map(
-          ({ id, ...rest }: Game) => rest
-        );
-
-        setGames(cleanedGames);
-      }
-    };
-
-    socket.addEventListener("message", handleMessage);
-
-    if (socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: "get_games" }));
-    } else {
-      socket.addEventListener(
-        "open",
-        () => socket.send(JSON.stringify({ type: "get_games" })),
-        { once: true }
-      );
-    }
-
-    return () => {
-      socket.removeEventListener("message", handleMessage);
-    };
-  }, [socket]);
-
-  const updateGames = (games: Game[]) => {
-    setGames(games);
-
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      const cleaned = games.map(({ id, ...rest }: Game) => rest);
-
-      socket.send(
-        JSON.stringify({
-          type: "update_games",
-          games: cleaned,
-        })
-      );
-    }
-  };
 
   return (
     <div className="games">
@@ -119,11 +73,8 @@ const Games: React.FC = () => {
       <AddGame
         show={isCreateGameOpen}
         setIsCreateGameOpen={setIsCreateGameOpen}
-        games={games}
         newGame={newGame}
         setNewGame={setNewGame}
-        updateGames={updateGames}
-        playersList={playerList.map((p) => p.name)}
       />
     </div>
   );

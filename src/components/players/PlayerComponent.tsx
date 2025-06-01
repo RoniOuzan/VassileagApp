@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { Player } from "../../context/PlayerListContext";
 import EditPlayer from "./EditPlayer";
 import "./Players.scss";
+import { Player } from "./Players";
 
 interface Props {
   player: Player;
-  setPlayer: (player: Player) => void;
 }
 
-const PlayerComponent: React.FC<Props> = ({ player, setPlayer }) => {
+const PlayerComponent: React.FC<Props> = ({ player }) => {
   const [editedPlayer, setEditedPlayer] = useState<Player | null>(null);
 
   return (
@@ -65,7 +64,6 @@ const PlayerComponent: React.FC<Props> = ({ player, setPlayer }) => {
           menuState={editedPlayer != null}
           setMenuState={(value) => !value && setEditedPlayer(null)}
           player={player}
-          setPlayer={setPlayer}
         />
       )}
     </div>

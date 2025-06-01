@@ -74,8 +74,8 @@
         border-radius: 12px;
         padding: 16px;
         font-family: Bold-Font;
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
         box-shadow: 0 0 5px 3px #F5D4097F;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
 
         &:hover {
             box-shadow: 0 0 15px 4px #F5D409B2;
@@ -309,7 +309,7 @@
     text-align: center;
     gap: 10px;
     margin: 10px;
-    animation: all 1s;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 
     &__top {
         width: 100%;
@@ -357,6 +357,7 @@
     }
 
     &:hover {
+        box-shadow: 0 0 10px 4px #F5D409B2;
         transform: scale(1.04);
     }
 

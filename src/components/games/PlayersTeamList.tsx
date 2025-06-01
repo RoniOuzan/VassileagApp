@@ -1,12 +1,12 @@
 import { Button, Input, Select, Space } from "antd";
 import { Game, PlayedPlayer } from "./Games";
-import { Ratings } from "../../context/PlayerListContext";
+import { Ratings } from "../players/Players";
 
 interface Props {
   team: "team1" | "team2";
   newGame: Game;
   setNewGame: (game: Game) => void;
-  playersList: string[];
+  playerList: string[];
   isPlayerNotListed: (player: string) => boolean;
   setPlayedPlayers: (players: PlayedPlayer[]) => void;
 }
@@ -15,7 +15,7 @@ const PlayersTeamList: React.FC<Props> = ({
   team,
   newGame,
   setNewGame,
-  playersList,
+  playerList: playersList,
   isPlayerNotListed,
   setPlayedPlayers,
 }) => {

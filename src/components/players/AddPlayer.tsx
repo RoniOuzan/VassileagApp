@@ -1,14 +1,8 @@
 import { Modal, Form, Input, Button, InputNumber, Select } from "antd";
 import { useState } from "react";
 import ErrorMessage from "../other/ErrorMessage";
-import {
-  Player,
-  Ratings,
-  defaultPlayer,
-  positionOptions,
-  ratingTypes,
-  usePlayerList,
-} from "../../context/PlayerListContext";
+import { useLigue } from "../../context/LigueContext";
+import { defaultPlayer, Player, positionOptions, Ratings, ratingTypes } from "./Players";
 
 const errorMessages = [
   "The player's name is not valid!",
@@ -22,7 +16,6 @@ interface Props {
   setShow: (value: boolean) => void;
   newPlayer: Player;
   setNewPlayer: (player: Player) => void;
-  updatePlayers: (players: Player[]) => void;
 }
 
 const AddPlayer: React.FC<Props> = ({
@@ -30,10 +23,14 @@ const AddPlayer: React.FC<Props> = ({
   setShow,
   newPlayer,
   setNewPlayer,
-  updatePlayers,
 }) => {
-  const { playerList } = usePlayerList();
+  const { ligue, updatePlayer } = useLigue();
 
+  if (!ligue) {
+    return <div />;
+  }
+
+  const playerList = ligue.players;
   const [errors, setErrors] = useState<boolean[]>(Array(4).fill(false));
 
   const isRatingInvalid = (ratings: Ratings) => {
@@ -61,7 +58,7 @@ const AddPlayer: React.FC<Props> = ({
       return;
     }
 
-    updatePlayers([...playerList, newPlayer]);
+    updatePlayer(newPlayer);
     setShow(false);
     setNewPlayer(defaultPlayer);
   };

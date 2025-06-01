@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { useSocket } from "./SocketContext";
 import { Game } from "../components/games/Games";
-import { Player } from "./PlayerListContext";
+import { Player } from "../components/players/Players";
 
 export const defaultLigue: Ligue = {
     name: "Ligue",
@@ -20,7 +20,9 @@ type LigueContextType = {
   setLigue: (ligue: Ligue | null) => void;
   ligues: Ligue[];
   setLigues: (ligues: Ligue[]) => void;
-  updateLigues: (ligues?: Ligue[], game?: Game, player?: Player) => void;
+  updateLigues: (ligues: Ligue[]) => void;
+  updateGame: (game: Game) => void;
+  updatePlayer: (game: Player) => void;
 };
 
 const LigueContext = createContext<LigueContextType | undefined>(undefined);
@@ -31,12 +33,25 @@ export const LigueProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [ligue, setLigue] = useState<Ligue | null>(null);
   const [ligueList, setLigues] = useState<Ligue[]>([]);
 
-  const updateLigues = (ligues?: Ligue[], game?: Game, player?: Player) => {
-    if (!ligue) return; // No selected ligue
+  const updateLigues = (ligues: Ligue[]) => {
+    setLigues(ligues);
 
-    if (!ligues) {
-      ligues = ligueList;
+    if (ligue != null) {
+      setLigue(ligues.find(l => l.name == ligue.name) || ligue);
     }
+
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          type: "update_ligues",
+          ligues: ligues,
+        })
+      );
+    }
+  }
+
+  const updateLiguesContent = (ligues: Ligue[] = ligueList, game?: Game, player?: Player) => {
+    if (!ligue) return; // No selected ligue
 
     const updatedLigues = ligues.map((l) => {
       if (l.name !== ligue.name) return l; // Don't change other ligues
@@ -62,7 +77,11 @@ export const LigueProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (player) {
         const playerIndex = updatedLigue.players.findIndex(p => p.name.toLowerCase() === player.name.toLowerCase());
         if (playerIndex !== -1) {
-          updatedLigue.players[playerIndex] = player;
+          if (Object.values(player.ratings).every((val) => val === -1)) {
+            updatedLigue.players.splice(playerIndex, 1); // Remove if not found
+          } else {
+            updatedLigue.players[playerIndex] = player;
+          }
         } else {
           updatedLigue.players.push(player); // Add if not found
         }
@@ -71,20 +90,21 @@ export const LigueProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       return updatedLigue;
     });
 
-    setLigues(updatedLigues);
-
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(
-        JSON.stringify({
-          type: "update_ligues",
-          ligues: updatedLigues,
-        })
-      );
-    }
+    updateLigues(updatedLigues);
   };
 
   return (
-    <LigueContext.Provider value={{ ligue, setLigue, ligues: ligueList, setLigues, updateLigues }}>
+    <LigueContext.Provider 
+      value={{ 
+        ligue, 
+        setLigue, 
+        ligues: ligueList, 
+        setLigues, 
+        updateLigues, 
+        updateGame: (game) => updateLiguesContent(undefined, game),
+        updatePlayer: (player) => updateLiguesContent(undefined, undefined, player),
+      }}
+    >
       {children}
     </LigueContext.Provider>
   );
