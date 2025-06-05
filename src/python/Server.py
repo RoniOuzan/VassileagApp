@@ -106,7 +106,7 @@ def add_cors_headers(handler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
-def run_server(host='localhost', port=8000):
+def run_server(host='localhost', port=3339):
     class RequestHandler(BaseHTTPRequestHandler):
         def do_OPTIONS(self):
             self.send_response(204)  # No Content
@@ -125,6 +125,3 @@ def run_server(host='localhost', port=8000):
     server = ThreadedHTTPServer((host, port), RequestHandler)
     print(f"Server running on http://{host}:{port}")
     server.serve_forever()
-
-if __name__ == '__main__':
-    run_server()

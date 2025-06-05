@@ -1,6 +1,6 @@
 import { encrypt, decrypt } from "./Encryption";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "http://localhost:3339";
 
 /**
  * Sends an encrypted request to the server and returns the decrypted response.
