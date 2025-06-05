@@ -4,11 +4,12 @@ import TeamComponent from "./TeamComponent";
 
 interface Props {
     game: Game;
+    onClick: () => void;
 }
 
-const GameComponent: React.FC<Props> = ({ game }) => {
+const GameComponent: React.FC<Props> = ({ game, onClick }) => {
     return (
-        <div className="games__game">
+        <div className="games__game" onClick={onClick}>
             <div className="games__game__date">
                 Date: {game.date}
             </div>

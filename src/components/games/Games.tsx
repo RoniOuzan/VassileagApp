@@ -5,6 +5,7 @@ import { useLigue } from "../../context/LigueContext";
 import AddGame from "./AddGame";
 import GameComponent from "./GameComponent";
 import "./Games.scss";
+import GamePreview from "./GamePreview";
 
 export type PlayedPlayer = {
   name: string;
@@ -39,6 +40,7 @@ const Games: React.FC = () => {
     team1: { goals: 0, players: [{ name: "", goals: 0, assists: 0 }] },
     team2: { goals: 0, players: [{ name: "", goals: 0, assists: 0 }] },
   });
+  const [previewGame, setPreviewGame] = useState<Game | null>(null);
 
   return (
     <div className="games">
@@ -62,7 +64,7 @@ const Games: React.FC = () => {
           </div>
         </>
       ) : (
-        games.map((game, index) => <GameComponent key={index} game={game} />)
+        games.map((game, index) => <GameComponent key={index} game={game} onClick={() => setPreviewGame(game)} />)
       )}
       <FloatButton
         className="games__button"
@@ -75,6 +77,10 @@ const Games: React.FC = () => {
         setIsCreateGameOpen={setIsCreateGameOpen}
         newGame={newGame}
         setNewGame={setNewGame}
+      />
+      <GamePreview 
+        game={previewGame}
+        setGame={setPreviewGame}
       />
     </div>
   );

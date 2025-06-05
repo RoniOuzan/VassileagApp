@@ -125,9 +125,9 @@ const App = () => {
                 key="header-no-ligue"
                 className="app__header"
                 style={{ height: headerHeight }}
-                initial={{ x: -50, rotate: -10, opacity: 0 }}
+                initial={{ x: -100, rotate: -10, opacity: 0 }}
                 animate={{ x: 0, rotate: 0, opacity: 1 }}
-                exit={{ x: -50, rotate: -10, opacity: 0 }}
+                exit={{ x: -100, rotate: -10, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 500, damping: 20 }}
               >
                 <p>Football Managing App</p>
@@ -190,7 +190,7 @@ const App = () => {
                     variants={getExitAnimationVariants(!slideUp)}
                     initial="initial"
                     animate="animate"
-                    transition={{ duration: 1, ease: "easeOut" }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
                     style={{ height: "100%", width: "100%", position: "absolute" }}
                   >
                     {renderContent(prevTab)}
@@ -202,7 +202,7 @@ const App = () => {
                     variants={getEntryAnimationVariants(slideUp)}
                     initial="initial"
                     animate="animate"
-                    transition={{ duration: 1, ease: "easeOut" }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
                     style={{ height: "100%", width: "100%", }}
                   >
                     {renderContent(selectedKey)}

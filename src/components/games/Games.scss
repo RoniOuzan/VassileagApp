@@ -317,6 +317,20 @@
                     border-color: #E5C308;
                 }
             }
+
+            .games__preview__players {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                .games__preview__player {
+                    padding: 8px 12px;
+                    border: 1px solid #F5D40950;
+                    border-radius: 8px;
+                    background-color: #292929;
+                    color: #F5D409;
+                }
+            }
         }
     }
 }
