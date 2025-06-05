@@ -36,19 +36,25 @@ const App = () => {
 
   const slideUp = tabOrder.indexOf(selectedKey) > tabOrder.indexOf(prevTab);
 
-  const getAnimationVariants = (slideUp: boolean) => ({
+  const getEntryAnimationVariants = (slideUp: boolean) => ({
     initial: { y: slideUp ? 1500 : -1500, opacity: 1 },
     animate: { y: 0, opacity: 1 },
   });
 
-  useEffect(() => {
-    setPrevTab((prev) => {
-      if (prev !== selectedKey) {
-        return prev;
+  const getExitAnimationVariants = (slideUp: boolean) => ({
+    initial: { y: 0, opacity: 1 },
+    animate: { y: slideUp ? 1500 : -1500, opacity: 1 },
+  });
+
+  const setKey = (key: string) => {
+    setSelectedKey((prev) => {
+      if (key !== prev) {
+        setPrevTab(prev);
       }
-      return prev;
-    });
-  }, [selectedKey]);
+
+      return key;
+    })
+  }
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -62,8 +68,8 @@ const App = () => {
     checkConnection();
   }, []);
 
-  const renderContent = () => {
-    switch (selectedKey) {
+  const renderContent = (key: string) => {
+    switch (key) {
       case "games":
         return <Games />;
       case "players":
@@ -82,7 +88,7 @@ const App = () => {
   return (
     <ThemeProvider primaryColor={"#F5D409"}>
       <Layout className="app">
-        <Header className="app__header" style={{ height: headerHeight }}>
+        <Header className="app__header" style={{ height: headerHeight, zIndex: "1" }}>
           <AnimatePresence mode="wait">
             {ligue != null && (
               <MotionHeader
@@ -129,6 +135,7 @@ const App = () => {
             )}
           </AnimatePresence>
         </Header>
+
         {!isConnected ? (
           <NoConnection />
         ) : ligue == null ? (
@@ -168,7 +175,7 @@ const App = () => {
                 <Menu
                   className="app__sider__tabs"
                   defaultSelectedKeys={["games"]}
-                  onClick={({ key }) => setSelectedKey(key)}
+                  onClick={({ key }) => setKey(key)}
                   items={[
                     { key: "games", icon: <ScheduleOutlined />, label: "Games" },
                     { key: "players", icon: <TeamOutlined />, label: "Players" },
@@ -176,19 +183,32 @@ const App = () => {
                   ]}
                 />
               </Sider>
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={selectedKey} // important for AnimatePresence to detect change
-                  variants={getAnimationVariants(slideUp)}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  style={{ height: "100%", width: "100%" }}
-                >
-                  {renderContent()}
-                </motion.div>
-              </AnimatePresence>
+              <div style={{ height: "100%", width: "100%", position: "relative", backgroundColor: "#1F1F1F", zIndex: "0" }}>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={prevTab} // important for AnimatePresence to detect change
+                    variants={getExitAnimationVariants(!slideUp)}
+                    initial="initial"
+                    animate="animate"
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    style={{ height: "100%", width: "100%", position: "absolute" }}
+                  >
+                    {renderContent(prevTab)}
+                  </motion.div>
+                </AnimatePresence>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={selectedKey} // important for AnimatePresence to detect change
+                    variants={getEntryAnimationVariants(slideUp)}
+                    initial="initial"
+                    animate="animate"
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    style={{ height: "100%", width: "100%", }}
+                  >
+                    {renderContent(selectedKey)}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </Layout>
           </motion.div>
         )}
