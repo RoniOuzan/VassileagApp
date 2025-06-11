@@ -148,8 +148,8 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
     const COLORS = ['#00C49F', '#FF8042'];
 
     return (
-        <div className="statistics__player-stats">
-            <h2 style={{fontSize: 50}}>{player.name}'s Statistics</h2>
+        <div className="player-stats">
+            <h2>{player.name}'s Statistics</h2>
 
             <div className="stats__totals">
                 <div><span>⚽ Total Goals</span>{totalGoals}G</div>

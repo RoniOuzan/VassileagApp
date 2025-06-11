@@ -4,6 +4,7 @@ import { useLeague } from "../../context/LeagueContext";
 import { Player } from "../players/Players";
 import { useState } from "react";
 import PlayerStatistics from "./PlayerStatistics";
+import { motion, AnimatePresence } from "framer-motion"; // ✅ Import
 
 interface Props {}
 
@@ -34,7 +35,21 @@ const Statistics: React.FC<Props> = () => {
                     }}
                 />
             </div>
-            {player && <PlayerStatistics player={player} />}
+
+            <AnimatePresence mode="wait">
+                {player && (
+                    <motion.div
+                        key={player.name}
+                        initial={{ opacity: 0, y: 200 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 200 }}
+                        transition={{ duration: 0.3 }}
+                        style={{ overflowY: "hidden" }}
+                    >
+                        <PlayerStatistics player={player} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

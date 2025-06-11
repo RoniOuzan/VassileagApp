@@ -14,6 +14,8 @@
         display: flex;
         justify-content: center;
         height: 60px;
+        margin-top: 30px;
+        margin-bottom: 10px;
 
         .ant-select {
             font-size: 24px;
@@ -37,14 +39,14 @@
         }
     }
 
-    .statistics__player-stats {
+    .player-stats {
         background-color: #1F1F1F;
         color: #F5D409;
         padding: 32px;
         border-radius: 16px;
         font-family: 'Bold-Font', sans-serif;
         width: 98%;
-        height: 80%;
+        height: 88%;
         margin: 16px;
         display: flex;
         flex-direction: column;
@@ -53,9 +55,9 @@
         overflow-y: auto;
 
         h2 {
-            font-size: 28px;
+            font-size: 48px;
             text-align: center;
-            margin-bottom: 16px;
+            margin: 20px;
         }
 
         .title {
@@ -74,6 +76,12 @@
             padding: 32px;
             border: 1px solid #F5D40955;
             box-shadow: 0 0 5px 1px #F5D40940;
+            transition: 0.3s all;
+
+            &:hover {
+                transform: scale(1.005);
+                box-shadow: 0 0 10px 2px #F5D40955;
+            }
 
             div {
                 background-color: #1F1F1F;
@@ -117,6 +125,12 @@
             display: flex;
             align-items: center;
             font-size: 30px;
+            transition: 0.3s all;
+
+            &:hover {
+                transform: scale(1.005);
+                box-shadow: 0 0 10px 2px #F5D40955;
+            }
 
             div {
                 background-color: #1F1F1F;
@@ -160,6 +174,12 @@
             border: 1px solid #F5D40955;
             box-shadow: 0 0 5px 1px #F5D40940;
             margin: 12px;
+            transition: 0.3s all;
+
+            &:hover {
+                transform: scale(1.005);
+                box-shadow: 0 0 10px 2px #F5D40955;
+            }
 
             table {
                 width: 80%;
@@ -199,6 +219,12 @@
             border: 1px solid #F5D40955;
             box-shadow: 0 0 5px 1px #F5D40940;
             margin: 12px;
+            transition: 0.3s all;
+
+            &:hover {
+                transform: scale(1.005);
+                box-shadow: 0 0 10px 2px #F5D40955;
+            }
 
             .recharts-cartesian-grid line {
                 stroke: #444;
