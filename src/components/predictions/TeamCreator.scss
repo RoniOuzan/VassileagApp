@@ -1,0 +1,58 @@
+.predictions-team-box {
+    background-color: #252525;
+    border: 1px solid #F5D40966;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    margin: 30px;
+    height: 250px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    gap: 16px;
+
+    .players-list {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .single-player {
+        position: relative;
+        width: calc(50% - 8px);
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+
+        .ant-btn-dangerous {
+            color: #F5D409;
+            border-color: #F5D409BB;
+            background-color: #292929;
+
+            &:hover {
+                background-color: #F5D40933;
+                color: #E5C308;
+                border-color: #F5D409BB;
+            }
+        }
+    }
+
+    .ant-btn-dashed {
+        margin-top: 16px;
+        width: 100%;
+        border-color: #f5d409;
+        color: #f5d409;
+
+        &:hover {
+            background-color: #f5d40922;
+            border-color: #f5d409;
+        }
+    }
+}

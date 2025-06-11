@@ -19,12 +19,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAnimationOrigin } from "./context/AnimationOriginContext.tsx";
 import { useLeague } from "./context/LeagueContext.tsx";
 import Leagues from "./components/leagues/Leagues.tsx";
+import Predictions from "./components/predictions/Predictions.tsx";
 
 export const headerHeight = 64;
 
 const MotionHeader = motion.create(Header);
 
-const tabOrder = ["games", "players", "statistics"];
+const tabOrder = ["games", "players", "statistics", "predictions"];
 
 const App = () => {
   const { league, setLeague } = useLeague();
@@ -76,6 +77,8 @@ const App = () => {
         return <Players />;
       case "statistics":
         return <Statistics />;
+      case "predictions":
+        return <Predictions />;
       default:
         return (
           <div style={{ padding: "16px", color: "#F5D409" }}>
@@ -199,6 +202,7 @@ const App = () => {
                     { key: "games", icon: <ScheduleOutlined />, label: "Games" },
                     { key: "players", icon: <TeamOutlined />, label: "Players" },
                     { key: "statistics", icon: <BarChartOutlined />, label: "Statistics" },
+                    { key: "predictions", icon: <BarChartOutlined />, label: "Predictions" },
                   ]}
                 />
               </Sider>
