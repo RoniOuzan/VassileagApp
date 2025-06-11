@@ -21,7 +21,6 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
 
     const games = league.games;
 
-    // Extract all played games for this player
     const playerStats = games.flatMap((game) => {
         const allPlayers: PlayedPlayer[] = [...game.team1.players, ...game.team2.players];
         const found = allPlayers.find(p => p.name === player.name);
@@ -60,6 +59,22 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
         { name: "Losses", value: lossCount }
     ];
 
+    // 🔹 New Metrics
+    let streak = 0;
+    for (let i = playerStats.length - 1; i >= 0; i--) {
+        if (playerStats[i].win) streak++;
+        else break;
+    }
+    const currentWinStreak = streak;
+
+    const winImpact = playerStats.filter(s => s.win).reduce((sum, s) => sum + s.goals + s.assists, 0);
+    const lossImpact = playerStats.filter(s => !s.win).reduce((sum, s) => sum + s.goals + s.assists, 0);
+
+    const avgWinContribution = winCount === 0 ? 0 : winImpact / winCount;
+    const avgLossContribution = lossCount === 0 ? 0 : lossImpact / lossCount;
+
+    const zeroContributionGames = playerStats.filter(s => s.goals === 0 && s.assists === 0).length;
+
     const CustomTooltip = ({ active, payload }: TooltipProps<ValueType, NameType>) => {
         if (active && payload && payload.length) {
             const data = payload[0];
@@ -90,25 +105,20 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
         return null;
     };
 
-
     const totalGoals = playerStats.reduce((sum, s) => sum + s.goals, 0);
     const totalAssists = playerStats.reduce((sum, s) => sum + s.assists, 0);
 
-    // Top performance
     const topGame = [...playerStats].sort((a, b) => (b.goals + b.assists) - (a.goals + a.assists))[0];
 
-    // Contribution rate
     const contributionStats = playerStats.map(s => ({
         playerContribution: s.goals + s.assists,
         teamGoals: s.teamGoals
     }));
 
     const averageContribution = Math.round(
-        contributionStats.reduce((sum, s) => sum + (s.playerContribution / (s.teamGoals || 1)), 0) /
-        contributionStats.length * 100
+        contributionStats.reduce((sum, s) => sum + (s.playerContribution / (s.teamGoals || 1)), 0) / contributionStats.length * 100
     );
 
-    // Performance against players
     const opponentPerformance: Record<string, { goals: number, assists: number, games: number }> = {};
     playerStats.forEach(stat => {
         stat.opponentPlayers.forEach(opponent => {
@@ -123,13 +133,11 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
         .sort((a, b) => b[1].goals + b[1].assists - (a[1].goals + a[1].assists))
         .slice(0, 5);
 
-    // Consistency score (based on standard deviation)
     const avgGoals = totalGoals / playerStats.length;
     const variance = playerStats.reduce((acc, s) => acc + Math.pow(s.goals - avgGoals, 2), 0) / playerStats.length;
     const stdDev = Math.sqrt(variance);
     const consistencyScore = Math.max(0, 100 - Math.round(stdDev * 20));
 
-    // Radar chart data
     const radarData = [
         { stat: 'Goals', value: totalGoals },
         { stat: 'Assists', value: totalAssists },
@@ -141,85 +149,86 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
 
     return (
         <div className="statistics__player-stats">
-            <h2>{player.name}'s Statistics</h2>
+            <h2 style={{fontSize: 50}}>{player.name}'s Statistics</h2>
 
             <div className="stats__totals">
-                <div>
-                    <span>⚽ Total Goals</span>
-                    {totalGoals}G
+                <div><span>⚽ Total Goals</span>{totalGoals}G</div>
+                <div><span>🎯 Total Assists</span>{totalAssists}A</div>
+                <div><span>📊 Win Rate</span>{winPercentage}% ({winCount}W / {lossCount}L)</div>
+                <div><span>📈 Consistency</span>{consistencyScore.toFixed(1)}</div>
+                <div><span>🤝 Contribution Rate</span>{averageContribution.toFixed(1)}%</div>
+                <div><span>🏆 Top Performance</span>{topGame?.goals}G, {topGame?.assists}A on {topGame?.date}</div>
+            </div>
+
+            <div className="charts-row">
+                <div className="single-chart" style={{ width: "100%" }}>
+                    <div className="title">
+                        Goals
+                    </div>
+                    <ResponsiveContainer width="100%" height={500}>
+                        <LineChart data={goalsOverTime}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip content={DarkTooltip} />
+                            <Legend />
+                            <Line type="monotone" dataKey="Goals" stroke="#F5D409" />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
-                <div>
-                    <span>🎯 Total Assists</span>
-                    {totalAssists}A
-                </div>
-                <div>
-                    <span>📊 Win Rate</span>
-                    {winPercentage}% ({winCount}W / {lossCount}L)
-                </div>
-                <div>
-                    <span>📈 Consistency</span>
-                    {consistencyScore.toFixed(1)}
-                </div>
-                <div>
-                    <span>🤝 Contribution Rate</span>
-                    {averageContribution.toFixed(1)}%
-                </div>
-                <div>
-                    <span>🤝 Top Performance</span>
-                    {topGame?.goals} Goals, {topGame?.assists} Assists on {topGame?.date}
+                <div className="single-chart" style={{ width: "100%" }}>
+                    <div className="title">
+                        Assists
+                    </div>
+                    <ResponsiveContainer width="100%" height={500}>
+                        <LineChart data={goalsOverTime}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip content={DarkTooltip} />
+                            <Legend />
+                            <Line type="monotone" dataKey="Assists" stroke="#F5D409" />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
 
             <div className="charts-row">
-                <ResponsiveContainer className={"single-chart"} width="100%" height={500}>
-                    <LineChart data={goalsOverTime}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip content={DarkTooltip} />
-                        <Legend />
-                        <Line type="monotone" dataKey="Goals" stroke="#F5D409" />
-                    </LineChart>
-                </ResponsiveContainer>
-                <ResponsiveContainer className={"single-chart"} width="100%" height={500}>
-                    <LineChart data={goalsOverTime}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <Tooltip content={DarkTooltip} />
-                        <Legend />
-                        <Line type="monotone" dataKey="Assists" stroke="#F5D409" />
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
-
-            <div className="single-chart">
-                <div style={{ textAlign: "center", fontSize: 24 }}>
-                    <strong>Win Rate:</strong> {winPercentage}% ({winCount} Wins / {totalGames} Games)
+                <div className="single-chart" style={{ width: "100%" }} >
+                    <div className="title">
+                        <strong>Win Rate:</strong> {winPercentage}% ({winCount} Wins / {totalGames} Games)
+                    </div>
+                    <ResponsiveContainer width="100%" height={500}>
+                        <PieChart>
+                            <Pie
+                                data={winData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={100}
+                                label
+                            >
+                                {winData.map((_entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip content={<CustomTooltip />} />
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
                 </div>
-                <ResponsiveContainer width="100%" height={500}>
-                    <PieChart>
-                        <Pie
-                            data={winData}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={100}
-                            label
-                        >
-                            {winData.map((_entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                        </Pie>
-                        <Tooltip content={<CustomTooltip />} />
-                        <Legend />
-                    </PieChart>
-                </ResponsiveContainer>
+
+                <div className="wins_stats">
+                    <div><span>📈 Current Win Streak:</span>{currentWinStreak} games</div>
+                    <div><span>🤝 Avg Contribution in Wins:</span>{avgWinContribution.toFixed(2)} G/A</div>
+                    <div><span>🤝 Avg Contribution in Losses:</span>{avgLossContribution.toFixed(2)} G/A</div>
+                    <div><span>🚫 Games Without Contribution:</span>{zeroContributionGames} games</div>
+                </div>
             </div>
 
             <div className="opponent-performance">
-                <div style={{ textAlign: "center", fontSize: 24, marginBottom: 16 }}>
+                <div className="title" style={{ marginBottom: 16 }}>
                     <strong>Performance Against Top Opponents</strong>
                 </div>
                 <table>
@@ -247,7 +256,7 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
             </div>
 
             <div className="single-chart">
-                <div style={{ textAlign: "center", marginBottom: 12, fontSize: 24 }}>
+                <div className="title">
                     <strong>Radar Overview</strong>
                 </div>
                 <ResponsiveContainer width="100%" height={400}>
