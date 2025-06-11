@@ -1,10 +1,202 @@
-.container {
+.statistics {
     background-color: #1F1F1F;
     color: #F5D409;
     width: 100%;
     height: 100vh;
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+
+    &__player-select {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .statistics__player-stats {
+        background-color: #1F1F1F;
+        color: #F5D409;
+        padding: 32px;
+        border-radius: 16px;
+        font-family: 'Bold-Font', sans-serif;
+        width: 98%;
+        height: 80%;
+        margin: 16px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 10px 2px #F5D40930;
+        border: 1px solid #F5D409BB;
+        overflow-y: auto;
+
+        h2 {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .stats__totals {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            margin: 12px;
+            font-size: 18px;
+            background-color: #292929;
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid #F5D40955;
+            box-shadow: 0 0 5px 1px #F5D40940;
+
+            div {
+                background-color: #1F1F1F;
+                border: 1px solid #F5D40933;
+                box-shadow: 0 0 6px #F5D40930;
+                border-radius: 10px;
+                padding: 12px;
+                margin: 2px;
+                min-width: 160px;
+                text-align: center;
+                transition: transform 0.2s ease;
+                font-weight: bold;
+                transition: 0.3s all;
+
+                &:hover {
+                    transform: scale(1.03);
+                    box-shadow: 0 0 10px 2px #F5D40955;
+                }
+
+                span {
+                    display: block;
+                    font-size: 16px;
+                    color: #F5D409BB;
+                    margin-bottom: 4px;
+                }
+            }
+        }
+
+        .opponent-performance {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #292929;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #F5D40955;
+            box-shadow: 0 0 5px 1px #F5D40940;
+            margin: 12px;
+
+            table {
+                width: 80%;
+                height: 160px;
+                background-color: #292929;
+                overflow: hidden;
+                border-radius: 16px;
+                box-shadow: 0 0 6px 1px #F5D40930;
+
+                thead {
+                    background-color: #1F1F1F;
+                    color: #F5D409;
+                    height: 50%;
+                }
+
+                th,
+                td {
+                    padding: 12px 16px;
+                    text-align: center;
+                    border-bottom: 1px solid #F5D40933;
+                }
+
+                td {
+                    background-color: #262626;
+                }
+
+                tbody tr:last-child td {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        .single-chart {
+            background-color: #292929;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #F5D40955;
+            box-shadow: 0 0 5px 1px #F5D40940;
+            margin: 12px;
+
+            .recharts-cartesian-grid line {
+                stroke: #444;
+            }
+
+            .recharts-tooltip-label,
+            .recharts-tooltip-item {
+                color: #1F1F1F !important;
+            }
+
+            .recharts-tooltip-wrapper {
+                background-color: #1F1F1F;
+                border-radius: 12px;
+                border: 1px solid #E5C308;
+                padding: 8px;
+            }
+
+            .recharts-legend-item text {
+                fill: #F5D409 !important;
+            }
+
+            .recharts-default-tooltip {
+                background-color: #1F1F1F;
+                color: #F5D409;
+                border-radius: 4px;
+                padding: 8px;
+                font-weight: bold;
+            }
+
+            .recharts-surface {
+                font-family: 'Bold-Font', sans-serif;
+            }
+
+            .recharts-pie {
+                pointer-events: none;
+            }
+        }
+
+        .charts-row {
+            display: flex;
+            flex-direction: row;
+
+            .recharts-cartesian-grid line {
+                stroke: #444;
+            }
+
+            .recharts-tooltip-label,
+            .recharts-tooltip-item {
+                color: #1F1F1F !important;
+            }
+
+            .recharts-tooltip-wrapper {
+                background-color: #1F1F1F;
+                border-radius: 12px;
+                border: 1px solid #E5C308;
+                padding: 8px;
+            }
+
+            .recharts-legend-item text {
+                fill: #F5D409 !important;
+            }
+
+            .recharts-default-tooltip {
+                background-color: #1F1F1F;
+                color: #F5D409;
+                border-radius: 4px;
+                padding: 8px;
+                font-weight: bold;
+            }
+
+            .recharts-surface {
+                font-family: 'Bold-Font', sans-serif;
+            }
+        }
+    }
 }
