@@ -6,6 +6,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
     text-align: center;
 
     .teams-creation {
@@ -24,7 +25,6 @@
         font-family: 'Bold-Font', sans-serif;
         width: 96.5%;
         position: relative;
-        left: 0.9%;
         height: 49%;
         margin: 16px;
         display: flex;
@@ -33,4 +33,103 @@
         border: 1px solid #F5D409BB;
         overflow-y: auto;
     }
+}
+
+.results-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.score-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+}
+
+.team-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .score {
+        font-size: 72px;
+        font-weight: bold;
+    }
+
+    .label {
+        font-size: 20px;
+        opacity: 0.8;
+    }
+}
+
+.vs {
+    color: #ccc;
+    font-size: 48px;
+}
+
+.charts-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.chart-box {
+    background-color: #1a1a1a;
+    border: 1px solid #f5d40955;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px 3px #f5d40933;
+    width: 31%;
+    text-align: center;
+
+    .chart-label {
+        margin-top: 4px;
+        color: #f5d409;
+        font-weight: bold;
+    }
+
+    .composition {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 8px;
+        position: relative;
+        height: 250px;
+        font-size: 40px;
+    }
+}
+
+.motm-box {
+    margin-top: 16px;
+    text-align: center;
+
+    .motm-label {
+        font-size: 20px;
+        color: #f5d409;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .motm-name {
+        font-size: 28px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+
+    .motm-details {
+        font-size: 16px;
+        color: #cccccc;
+    }
+}
+
+.motm-section {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

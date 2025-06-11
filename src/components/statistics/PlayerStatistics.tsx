@@ -59,7 +59,6 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
         { name: "Losses", value: lossCount }
     ];
 
-    // 🔹 New Metrics
     let streak = 0;
     for (let i = playerStats.length - 1; i >= 0; i--) {
         if (playerStats[i].win) streak++;
@@ -145,13 +144,13 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
         { stat: 'Contribution%', value: averageContribution },
     ];
 
-    const COLORS = ['#00C49F', '#FF8042'];
+    const COLORS = ['#F5D409', '#444'];
 
     return (
         <div className="player-stats">
             <h2>{player.name}'s Statistics</h2>
 
-            <div className="stats__totals">
+            <div className="stats-totals">
                 <div><span>⚽ Total Goals</span>{totalGoals}G</div>
                 <div><span>🎯 Total Assists</span>{totalAssists}A</div>
                 <div><span>📊 Win Rate</span>{winPercentage}% ({winCount}W / {lossCount}L)</div>
@@ -193,6 +192,34 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
                 </div>
             </div>
 
+            <div className="opponent-performance">
+                <div className="title" style={{ marginBottom: 16 }}>
+                    <strong>Performance Against Top Opponents</strong>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Opponent</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Games</th>
+                            <th>Goals Per Game</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {opponentPerfList.map(([name, stats]) => (
+                            <tr key={name}>
+                                <td>{name}</td>
+                                <td>{stats.goals}</td>
+                                <td>{stats.assists}</td>
+                                <td>{stats.games}</td>
+                                <td>{((stats.goals + stats.assists) / stats.games).toFixed(2)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
             <div className="charts-row">
                 <div className="single-chart" style={{ width: "100%" }} >
                     <div className="title">
@@ -225,34 +252,6 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
                     <div><span>🤝 Avg Contribution in Losses:</span>{avgLossContribution.toFixed(2)} G/A</div>
                     <div><span>🚫 Games Without Contribution:</span>{zeroContributionGames} games</div>
                 </div>
-            </div>
-
-            <div className="opponent-performance">
-                <div className="title" style={{ marginBottom: 16 }}>
-                    <strong>Performance Against Top Opponents</strong>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Opponent</th>
-                            <th>Goals</th>
-                            <th>Assists</th>
-                            <th>Games</th>
-                            <th>Goals Per Game</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {opponentPerfList.map(([name, stats]) => (
-                            <tr key={name}>
-                                <td>{name}</td>
-                                <td>{stats.goals}</td>
-                                <td>{stats.assists}</td>
-                                <td>{stats.games}</td>
-                                <td>{((stats.goals + stats.assists) / stats.games).toFixed(2)}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
             </div>
 
             <div className="single-chart">

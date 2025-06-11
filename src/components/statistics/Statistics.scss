@@ -65,7 +65,7 @@
             font-size: 30px;
         }
 
-        .stats__totals {
+        .stats-totals {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-evenly;
@@ -262,6 +262,7 @@
         .charts-row {
             display: flex;
             flex-direction: row;
+            flex-wrap: nowrap;
 
             .recharts-cartesian-grid line {
                 stroke: #444;
