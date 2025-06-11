@@ -1,11 +1,12 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 import { useState } from "react";
-import { useLigue } from "../../context/LigueContext";
 import AddGame from "./AddGame";
 import GameComponent from "./GameComponent";
 import "./Games.scss";
 import GamePreview from "./GamePreview";
+import { useLeague } from "../../context/LeagueContext";
+import { v4 as uuidv4 } from 'uuid';
 
 export type PlayedPlayer = {
   name: string;
@@ -26,16 +27,16 @@ export type Team = {
 };
 
 const Games: React.FC = () => {
-  const { ligue } = useLigue();
+  const { league } = useLeague();
 
-  if (!ligue) {
+  if (!league) {
     return <div/>;
   }
 
-  const games = ligue.games;
+  const games = league.games;
   const [isCreateGameOpen, setIsCreateGameOpen] = useState(false);
   const [newGame, setNewGame] = useState<Game>({
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     date: "",
     team1: { goals: 0, players: [{ name: "", goals: 0, assists: 0 }] },
     team2: { goals: 0, players: [{ name: "", goals: 0, assists: 0 }] },

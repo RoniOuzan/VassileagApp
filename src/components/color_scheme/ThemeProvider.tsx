@@ -118,6 +118,27 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ colorTheme = defaultColor
                     *::-webkit-scrollbar-track {
                         background-color: #1F1F1F;
                     }
+
+                    .ant-select-dropdown {
+                        background-color: #292929 !important;
+                        color: #F5D409 !important;
+                        border: 1px solid #F5D409BB !important;
+                        font-family: 'Bold-Font', sans-serif;
+
+                        .ant-select-item {
+                            color: #F5D409 !important;
+                            font-weight: bold;
+
+                            &:hover {
+                            background-color: #3A3A27 !important;
+                            }
+                        }
+
+                        .ant-select-item-option-selected {
+                            background-color: #1F1F1F !important;
+                        }
+                    }
+
                 `}
             </style>
             {children}

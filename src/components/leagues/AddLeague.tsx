@@ -1,11 +1,11 @@
 import { Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import ErrorMessage from "../other/ErrorMessage";
-import { defaultLigue, Ligue, useLigue } from "../../context/LigueContext";
+import { defaultLeague, League, useLeague } from "../../context/LeagueContext";
 
 const errorMessages = [
-    "This ligue's name is not valid!",
-    "A ligue with this name is already taken!",
+    "This league's name is not valid!",
+    "A league with this name is already taken!",
 ];
 
 interface Props {
@@ -13,25 +13,25 @@ interface Props {
     setShow: (value: boolean) => void;
 }
 
-const AddLigue: React.FC<Props> = ({ show, setShow }) => {
-    const { ligues, updateLigues } = useLigue();
+const AddLeague: React.FC<Props> = ({ show, setShow }) => {
+    const { leagues, updateLeagues } = useLeague();
 
     const [errors, setErrors] = useState<boolean[]>(Array(2).fill(false));
-    const [newLigue, setNewLigue] = useState<Ligue>(defaultLigue);
+    const [newLeague, setNewLeague] = useState<League>(defaultLeague);
 
-    const handleAddLigue = () => {
+    const handleAddLeague = () => {
         const conditions = [
-            !newLigue.name,
-            ligues.some(l => l.name.toLowerCase() == newLigue.name.toLowerCase())
+            !newLeague.name,
+            leagues.some(l => l.name.toLowerCase() == newLeague.name.toLowerCase())
         ];
         if (conditions.some(c => c)) {
             setErrors(conditions);
             return;
         }
 
-        updateLigues([...ligues, newLigue]);
+        updateLeagues([...leagues, newLeague]);
         setShow(false);
-        setNewLigue(defaultLigue);
+        setNewLeague(defaultLeague);
     };
 
     return (
@@ -46,8 +46,8 @@ const AddLigue: React.FC<Props> = ({ show, setShow }) => {
                 <Form.Item label="Name">
                     <Input
                         placeholder="Name"
-                        value={newLigue.name}
-                        onChange={(e) => setNewLigue({ ...newLigue, name: e.target.value })}
+                        value={newLeague.name}
+                        onChange={(e) => setNewLeague({ ...newLeague, name: e.target.value })}
                     />
                 </Form.Item>
 
@@ -59,12 +59,12 @@ const AddLigue: React.FC<Props> = ({ show, setShow }) => {
                             {errorMessages[i]}
                         </ErrorMessage>
                     ))}
-                <Button type="primary" onClick={handleAddLigue}>
-                    Add Ligue
+                <Button type="primary" onClick={handleAddLeague}>
+                    Add League
                 </Button>
             </Form>
         </Modal>
     );
 };
 
-export default AddLigue;
+export default AddLeague;

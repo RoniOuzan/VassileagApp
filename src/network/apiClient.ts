@@ -1,11 +1,11 @@
 import { encrypt, decrypt } from "./Encryption";
 
-const API_URL = "http://localhost:3339";
+const API_URL = "http://192.168.1.73:3339";
 
 /**
  * Sends an encrypted request to the server and returns the decrypted response.
  * 
- * @param type - The message type, like "get_ligues"
+ * @param type - The message type, like "get_leagues"
  * @param payload - Optional payload to include in the message
  */
 export async function apiClient<T = any>(type: string, payload: Record<string, any> = {}): Promise<T> {

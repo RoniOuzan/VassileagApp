@@ -1,15 +1,19 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from socketserver import ThreadingMixIn
-from database import get_all_ligues, update_ligues
+from database import get_all_leagues, update_leagues
 from encryption import encrypt, decrypt
 import json
 
-ALLOWED_ORIGINS = ["http://localhost:5173"]  # Your React dev server
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://172.20.10.14:5173",
+    "http://192.168.1.73:5173"
+]
 
 def handle_get(handler):
     if handler.path == '/':
-        ligues = get_all_ligues()
-        response = {"type": "ligues_list", "ligues": ligues}
+        leagues = get_all_leagues()
+        response = {"type": "leagues_list", "leagues": leagues}
         encrypted_response = encrypt(json.dumps(response))
 
         handler.send_response(200)
@@ -49,9 +53,9 @@ def handle_post(handler):
             handler.end_headers()
             handler.wfile.write(encrypted_response.encode())
             return
-        elif msg_type == "get_ligues":
-            ligues = get_all_ligues()
-            response = {"type": "ligues_list", "ligues": ligues}
+        elif msg_type == "get_leagues":
+            leagues = get_all_leagues()
+            response = {"type": "leagues_list", "leagues": leagues}
             encrypted_response = encrypt(json.dumps(response))
 
             print(response)
@@ -61,16 +65,16 @@ def handle_post(handler):
             handler.end_headers()
             handler.wfile.write(encrypted_response.encode())
             return
-        elif msg_type == "update_ligues":
-            if "ligues" not in data:
+        elif msg_type == "update_leagues":
+            if "leagues" not in data:
                 handler.send_response(400)
                 add_cors_headers(handler)
                 handler.end_headers()
                 return
 
-            update_ligues(data["ligues"])
+            update_leagues(data["leagues"])
 
-            response = {"type": "success", "message": "Ligues list updated"}
+            response = {"type": "success", "message": "Leagues list updated"}
             encrypted_response = encrypt(json.dumps(response))
 
             handler.send_response(200)
@@ -106,7 +110,7 @@ def add_cors_headers(handler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
-def run_server(host='localhost', port=3339):
+def run_server(host='0.0.0.0', port=3339):
     class RequestHandler(BaseHTTPRequestHandler):
         def do_OPTIONS(self):
             self.send_response(204)  # No Content

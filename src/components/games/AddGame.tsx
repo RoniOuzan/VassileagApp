@@ -1,9 +1,10 @@
 import { Modal, Form, Input, Button, Divider } from "antd";
 import { Game, PlayedPlayer } from "./Games";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ErrorMessage from "../other/ErrorMessage";
 import PlayersTeamList from "./PlayersTeamList";
-import { useLigue } from "../../context/LigueContext";
+import { useLeague } from "../../context/LeagueContext";
+import { v4 as uuidv4 } from 'uuid';
 
 const errorMessages = [
     "The date is not valid!",
@@ -24,16 +25,12 @@ const AddGame: React.FC<Props> = ({
     newGame,
     setNewGame,
 }) => {
-    const { ligue, updateGame } = useLigue();
+    const { league, updateGame } = useLeague();
 
-    if (!ligue) {
-        return <div/>;
-    }
-
-    const playerList = ligue.players.map(p => p.name);
     const [errors, setErrors] = useState<boolean[]>(Array(5).fill(false));
     const [playedPlayers1, setPlayedPlayers1] = useState<PlayedPlayer[]>([]);
     const [playedPlayers2, setPlayedPlayers2] = useState<PlayedPlayer[]>([]);
+    const [displayErrors, setDisplayErrors] = useState(false);
 
     const resetPlayedPlayers = () => {
         setPlayedPlayers1([]);
@@ -48,7 +45,7 @@ const AddGame: React.FC<Props> = ({
         setNewGame({ ...newGame, [field]: value });
     };
 
-    const handleAddGame = () => {
+    const updateErrorMessages = useCallback(() => {
         const conditions = [
             !newGame.date,
             (newGame.team1.players as PlayedPlayer[]).length === 0 ||
@@ -58,12 +55,20 @@ const AddGame: React.FC<Props> = ({
         ];
         if (conditions.some((c) => c)) {
             setErrors(conditions);
-            return;
+            return true;
         }
+        return false;
+    }, [newGame]);
+
+    const handleAddGame = () => {
+        setDisplayErrors(true);
+        if (updateErrorMessages()) 
+            return;
+        
         updateGame(newGame);
         setIsCreateGameOpen(false);
         setNewGame({
-            id: crypto.randomUUID(),
+            id: uuidv4(),
             date: "",
             team1: { goals: 0, players: [] },
             team2: { goals: 0, players: [] },
@@ -73,7 +78,7 @@ const AddGame: React.FC<Props> = ({
 
     useEffect(() => {
         if (show) {
-                resetPlayedPlayers();
+            resetPlayedPlayers();
         }
     }, [show]);
 
@@ -91,7 +96,7 @@ const AddGame: React.FC<Props> = ({
                 },
             });
         }
-    }, [newGame.team1.players, newGame]);
+    }, [newGame.team1.players, newGame, setNewGame]);
 
     useEffect(() => {
         if (
@@ -106,7 +111,16 @@ const AddGame: React.FC<Props> = ({
                 },
             });
         }
-    }, [newGame.team2.players, newGame]);
+    }, [newGame.team2.players, newGame, setNewGame]);
+
+    useEffect(() => {
+        updateErrorMessages();
+    }, [updateErrorMessages, newGame.date, newGame.team1.players, newGame.team2.players]);
+    
+    if (!league) {
+        return <div/>;
+    }
+    const playerList = league.players.map(p => p.name);
 
     return (
         <Modal
@@ -121,7 +135,10 @@ const AddGame: React.FC<Props> = ({
                     <Input
                         placeholder="DD/MM/YYYY"
                         value={newGame.date}
-                        onChange={(e) => handleInputChange("date", e.target.value)}
+                        onChange={(e) => {
+                            handleInputChange("date", e.target.value);
+                            updateErrorMessages();
+                        }}
                     />
                 </Form.Item>
 
@@ -146,7 +163,7 @@ const AddGame: React.FC<Props> = ({
                     />
                 </div>
 
-                {errors
+                {displayErrors && errors
                     .map((c, i) => ({ c, i }))
                     .filter(({ c }) => c)
                     .map(({ i }) => (

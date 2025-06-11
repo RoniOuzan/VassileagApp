@@ -1,18 +1,18 @@
 import { useAnimationOrigin } from "../../context/AnimationOriginContext";
-import { Ligue } from "../../context/LigueContext";
-import "./Ligues.scss";
+import { League } from "../../context/LeagueContext";
+import "./Leagues.scss";
 
 interface Props {
-    ligue: Ligue;
+    league: League;
     onClick: () => void;
 }
 
-const LigueComponent: React.FC<Props> = ({ ligue, onClick }) => {
+const LeagueComponent: React.FC<Props> = ({ league, onClick }) => {
     const { setAnimationOrigin } = useAnimationOrigin();
 
     return (
         <div
-            className="ligue-component"
+            className="league-component"
             onClick={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
 
@@ -24,9 +24,9 @@ const LigueComponent: React.FC<Props> = ({ ligue, onClick }) => {
                 onClick();
             }}
         >
-            {ligue.name}
+            {league.name}
         </div>
     );
 };
 
-export default LigueComponent;
+export default LeagueComponent;

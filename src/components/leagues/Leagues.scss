@@ -1,4 +1,4 @@
-.ligues {
+.leagues {
     background-color: #1F1F1F;
     color: #F5D409;
     width: 100%;
@@ -58,7 +58,7 @@
     }
 }
 
-.ligue-component {
+.league-component {
     width: 15%;
     min-width: 160px;
     height: 300px;
@@ -80,10 +80,12 @@
     font-size: 32px;
 
     &:hover {
-        transform: scale(1.01);
+        box-shadow: 0 0 10px 2px #F5D409B2;
+        transform: scale(1.03);
     }
 
     &:active {
-        transform: scale(0.99);
+        box-shadow: 0 0 10px 2px #F5D409B2;
+        transform: scale(0.97);
     }
 }

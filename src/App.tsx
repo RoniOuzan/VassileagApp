@@ -11,23 +11,23 @@ import { useEffect, useState } from "react";
 import "./App.scss";
 import ThemeProvider from "./components/color_scheme/ThemeProvider.tsx";
 import Games from "./components/games/Games";
-import Ligues from "./components/ligues/Ligues.tsx";
 import NoConnection from "./components/other/no_connection/NoConnection.tsx";
 import Players from "./components/players/Players.tsx";
 import Statistics from "./components/statistics/Statistics";
-import { useLigue } from "./context/LigueContext.tsx";
 import { apiClient } from "./network/apiClient.ts";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAnimationOrigin } from "./context/AnimationOriginContext.tsx";
+import { useLeague } from "./context/LeagueContext.tsx";
+import Leagues from "./components/leagues/Leagues.tsx";
 
 export const headerHeight = 64;
 
-const MotionHeader = motion(Header);
+const MotionHeader = motion.create(Header);
 
 const tabOrder = ["games", "players", "statistics"];
 
 const App = () => {
-  const { ligue, setLigue } = useLigue();
+  const { league, setLeague } = useLeague();
   const { origin } = useAnimationOrigin();
   
   const [selectedKey, setSelectedKey] = useState("games");
@@ -90,9 +90,9 @@ const App = () => {
       <Layout className="app">
         <Header className="app__header" style={{ height: headerHeight, zIndex: "1" }}>
           <AnimatePresence mode="wait">
-            {ligue != null && (
+            {league != null ? (
               <MotionHeader
-                key="header-with-ligue"
+                key="header-with-league"
                 className="app__header"
                 style={{ height: headerHeight }}
                 initial={{ y: -50, rotate: -10, opacity: 0 }}
@@ -100,29 +100,39 @@ const App = () => {
                 exit={{ y: -50, rotate: -10, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 500, damping: 25 }}
               >
-                <motion.div
-                  whileHover={{ scale: 1.2, rotate: -5 }}
-                  whileTap={{ scale: 0.9 }}
-                  initial={{ x: -20, rotate: -90, opacity: 0 }}
-                  animate={{ x: 0, rotate: 0, opacity: 1 }}
-                  exit={{ x: -10, rotate: -90, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                >
-                  <Button
-                    type="text"
-                    size="large"
-                    icon={<ArrowLeftOutlined />}
-                    onClick={() => setLigue(null)}
-                    style={{ color: "#F5D409" }}
-                  />
-                </motion.div>
-                Football Managing App - {ligue?.name}
-              </MotionHeader>
-            )}
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.2, rotate: -5 }}
+                    whileTap={{ scale: 0.9 }}
+                    initial={{ x: -20, rotate: -90, opacity: 0 }}
+                    animate={{ x: 0, rotate: 0, opacity: 1 }}
+                    exit={{ x: -10, rotate: -90, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                  >
+                    <Button
+                      type="text"
+                      size="large"
+                      icon={<ArrowLeftOutlined />}
+                      onClick={() => setLeague(null)}
+                      style={{ color: "#F5D409" }}
+                    />
+                  </motion.div>
 
-            {ligue == null && (
+                  <img
+                    src="/logo_nobg.png"
+                    alt="Logo"
+                    style={{ height: 40, userSelect: "none" }}
+                    draggable={false}
+                  />
+                  
+                  <span style={{ color: "#F5D409", fontWeight: "bold", fontSize: 18 }}>
+                    Football Managing App - {league.name}
+                  </span>
+                </div>
+              </MotionHeader>
+            ) : (
               <MotionHeader
-                key="header-no-ligue"
+                key="header-no-league"
                 className="app__header"
                 style={{ height: headerHeight }}
                 initial={{ x: -100, rotate: -10, opacity: 0 }}
@@ -130,7 +140,16 @@ const App = () => {
                 exit={{ x: -100, rotate: -10, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 500, damping: 20 }}
               >
-                <p>Football Managing App</p>
+                <img
+                  src="/logo_nobg.png"
+                  alt="Logo"
+                  style={{ height: 40, userSelect: "none" }}
+                  draggable={false}
+                />
+                
+                <span style={{ color: "#F5D409", fontWeight: "bold", fontSize: 18 }}>
+                  Football Managing App
+                </span>
               </MotionHeader>
             )}
           </AnimatePresence>
@@ -138,9 +157,9 @@ const App = () => {
 
         {!isConnected ? (
           <NoConnection />
-        ) : ligue == null ? (
+        ) : league == null ? (
           <motion.div
-            key="ligues"
+            key="leagues"
             initial={{ x: -2000, opacity: 0.5 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -2000, opacity: 0 }}
@@ -153,7 +172,7 @@ const App = () => {
                 : "50% 50%",
             }}
           >
-            <Ligues />
+            <Leagues />
           </motion.div>
         ) : (
           <motion.div

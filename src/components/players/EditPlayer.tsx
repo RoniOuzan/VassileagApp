@@ -1,8 +1,8 @@
 import { Button, Form, InputNumber, Modal, Select } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ErrorMessage from "../other/ErrorMessage";
 import { Player, Ratings, positionOptions, ratingTypes } from "./Players";
-import { useLigue } from "../../context/LigueContext";
+import { useLeague } from "../../context/LeagueContext";
 
 export type MenuState = "create" | "edit" | "close";
 
@@ -23,10 +23,11 @@ const EditPlayer: React.FC<Props> = ({
   setMenuState,
   player,
 }) => {
-  const { updatePlayer } = useLigue();
+  const { updatePlayer } = useLeague();
 
   const [errors, setErrors] = useState<boolean[]>(Array(4).fill(false));
   const [editingPlayer, setEditingPlayer] = useState<Player>(player);
+  const [displayErrors, setDisplayErrors] = useState(false);
 
   const isRatingInvalid = (ratings: Ratings) => {
     return (
@@ -39,7 +40,7 @@ const EditPlayer: React.FC<Props> = ({
     );
   };
 
-  const handleEditPlayer = () => {
+  const updateErrorMessages: () => boolean = () => {
     const conditions = [
       !editingPlayer.name,
       editingPlayer.ratings.overall < 0,
@@ -47,8 +48,14 @@ const EditPlayer: React.FC<Props> = ({
     ];
     if (conditions.some((c) => c)) {
       setErrors(conditions);
-      return;
+      return true;
     }
+    return false;
+  }
+
+  const handleEditPlayer = () => {
+    setDisplayErrors(true);
+    if (updateErrorMessages()) return;
 
     updatePlayer(editingPlayer);
     setMenuState(false);
@@ -79,6 +86,10 @@ const EditPlayer: React.FC<Props> = ({
       },
     });
   };
+
+  useEffect(() => {
+    updateErrorMessages();
+  }, [player.position, ...ratingTypes.map((key) => player.ratings[key as keyof typeof player.ratings])]);
 
   return (
     <Modal
@@ -135,7 +146,7 @@ const EditPlayer: React.FC<Props> = ({
           ))}
         </div>
 
-        {errors
+        {displayErrors && errors
           .map((c, i) => ({ c, i }))
           .filter(({ c }) => c)
           .map(({ i }) => (

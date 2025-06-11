@@ -1,22 +1,19 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 import { useState } from "react";
-import { useLigue } from "../../context/LigueContext";
-import AddLigue from "./AddLigue";
-import LigueComponent from "./LigueComponent";
-import "./Ligues.scss";
+import AddLeague from "./AddLeague";
+import LeagueComponent from "./LeagueComponent";
+import "./Leagues.scss";
+import { useLeague } from "../../context/LeagueContext";
 
-interface Props {
-}
+const Leagues: React.FC = () => {
+    const { setLeague, leagues } = useLeague();
 
-const Ligues: React.FC<Props> = ({ }) => {
-    const { setLigue, ligues } = useLigue();
-
-    const [createLigue, setCreateLigue] = useState<boolean>(false);
+    const [createLeague, setCreateLeague] = useState<boolean>(false);
 
     return (
-        <div className="ligues">
-            {ligues.length === 0 ? (
+        <div className="leagues">
+            {leagues.length === 0 ? (
                 <div
                     style={{
                         display: "flex",
@@ -29,30 +26,30 @@ const Ligues: React.FC<Props> = ({ }) => {
                     }}
                 >
                     <div style={{ fontSize: "64px" }}>
-                        No ligues have been created yet.
+                        No leagues have been created yet.
                     </div>
                     <div style={{ fontSize: "48px", color: "#888" }}>Come back later</div>
                 </div>
             ) : (
-                ligues.map((ligue, index) => (
-                    <LigueComponent key={index} ligue={ligue} onClick={() => {
-                        setLigue(ligue);
+                leagues.map((league, index) => (
+                    <LeagueComponent key={index} league={league} onClick={() => {
+                        setLeague(league);
                     }} />
                 ))
             )}
 
             <FloatButton
-                className="ligues__button"
+                className="leagues__button"
                 icon={<PlusOutlined />}
-                onClick={() => setCreateLigue(true)}
+                onClick={() => setCreateLeague(true)}
             />
 
-            <AddLigue 
-                show={createLigue} 
-                setShow={setCreateLigue} 
+            <AddLeague 
+                show={createLeague} 
+                setShow={setCreateLeague} 
             />
         </div>
     );
 }
 
-export default Ligues;
+export default Leagues;

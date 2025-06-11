@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 import { useState } from "react";
-import { useLigue } from "../../context/LigueContext";
+import { useLeague } from "../../context/LeagueContext";
 import AddPlayer from "./AddPlayer";
 import PlayerComponent from "./PlayerComponent";
 import "./Players.scss";
@@ -65,15 +65,15 @@ export type Player = {
 };
 
 const Players: React.FC = () => {
-    const { ligue } = useLigue();
+    const { league } = useLeague();
 
-    if (!ligue) {
-        return <div />;
-    }
-
-    const playerList = ligue.players;
     const [createPlayerMenu, setCreatePlayerMenu] = useState(false);
     const [newPlayer, setNewPlayer] = useState<Player>(defaultPlayer);
+
+    if (!league) {
+        return <div />;
+    }
+    const playerList = league.players;
 
     return (
         <div className="players">

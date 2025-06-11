@@ -2,15 +2,15 @@ from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017")
 db = client["vassileage"]
-ligues_collection = db["ligues"]
+leagues_collection = db["leagues"]
 
-def get_all_ligues():
-    ligues = list(ligues_collection.find({}))
-    for ligue in ligues:
-        ligue["_id"] = str(ligue["_id"])
-    return ligues
+def get_all_leagues():
+    leagues = list(leagues_collection.find({}))
+    for league in leagues:
+        league["_id"] = str(league["_id"])
+    return leagues
 
-def update_ligues(new_ligues):
-    ligues_collection.delete_many({})
-    if new_ligues:
-        ligues_collection.insert_many(new_ligues)
+def update_leagues(new_leagues):
+    leagues_collection.delete_many({})
+    if new_leagues:
+        leagues_collection.insert_many(new_leagues)
