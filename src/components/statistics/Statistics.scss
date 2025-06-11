@@ -55,14 +55,50 @@
         overflow-y: auto;
 
         h2 {
-            font-size: 48px;
+            font-size: 60px;
             text-align: center;
             margin: 20px;
         }
 
         .title {
             text-align: center;
-            font-size: 30px;
+            font-size: 40px;
+        }
+
+        .ratings {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            margin: 12px;
+            padding: 8px;
+            transition: 0.3s all;
+
+            div {
+                background-color: #1F1F1F;
+                border: 1px solid #F5D40933;
+                box-shadow: 0 0 6px #F5D40930;
+                border-radius: 10px;
+                padding: 12px;
+                margin: 4px;
+                font-size: 30px;
+                min-width: 200px;
+                text-align: center;
+                transition: transform 0.2s ease;
+                font-weight: bold;
+                transition: 0.3s all;
+
+                &:hover {
+                    transform: scale(1.03);
+                    box-shadow: 0 0 10px 2px #F5D40955;
+                }
+
+                span {
+                    display: block;
+                    font-size: 24px;
+                    color: #F5D409C4;
+                    margin-bottom: 4px;
+                }
+            }
         }
 
         .stats-totals {
@@ -104,7 +140,7 @@
                 span {
                     display: block;
                     font-size: 16px;
-                    color: #F5D409BB;
+                    color: #F5D409C4;
                     margin-bottom: 4px;
                 }
             }
@@ -152,7 +188,7 @@
                 span {
                     display: block;
                     font-size: 16px;
-                    color: #F5D409BB;
+                    color: #F5D409C4;
                     margin-bottom: 4px;
                 }
             }
@@ -193,6 +229,7 @@
                     background-color: #1F1F1F;
                     color: #F5D409;
                     height: 50%;
+                    font-size: 30px;
                 }
 
                 th,
@@ -204,6 +241,7 @@
 
                 td {
                     background-color: #262626;
+                    font-size: 24px;
                 }
 
                 tbody tr:last-child td {

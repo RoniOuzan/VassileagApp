@@ -150,13 +150,27 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
         <div className="player-stats">
             <h2>{player.name}'s Statistics</h2>
 
+            <div className="single-chart">
+                <div className="title">
+                    Ratings
+                </div>
+                <div className="ratings">
+                    <div><span>⚡Pace</span>{player.ratings.pace}</div>
+                    <div><span>🎯Shooting</span>{player.ratings.shooting}</div>
+                    <div><span>🤝Passing</span>{player.ratings.passing}</div>
+                    <div><span>🕺Dribbling</span>{player.ratings.dribbling}</div>
+                    <div><span>🛡️Defending</span>{player.ratings.defending}</div>
+                    <div><span>💪Physicality</span>{player.ratings.physicality}</div>
+                </div>
+            </div>
+
             <div className="stats-totals">
-                <div><span>⚽ Total Goals</span>{totalGoals}G</div>
-                <div><span>🎯 Total Assists</span>{totalAssists}A</div>
-                <div><span>📊 Win Rate</span>{winPercentage}% ({winCount}W / {lossCount}L)</div>
-                <div><span>📈 Consistency</span>{consistencyScore.toFixed(1)}</div>
-                <div><span>🤝 Contribution Rate</span>{averageContribution.toFixed(1)}%</div>
-                <div><span>🏆 Top Performance</span>{topGame?.goals}G, {topGame?.assists}A on {topGame?.date}</div>
+                <div><span>⚽Total Goals</span>{totalGoals}G</div>
+                <div><span>🎯Total Assists</span>{totalAssists}A</div>
+                <div><span>📊Win Rate</span>{winPercentage}% ({winCount}W / {lossCount}L)</div>
+                <div><span>📈Consistency</span>{consistencyScore.toFixed(1)}</div>
+                <div><span>🤝Contribution Rate</span>{averageContribution.toFixed(1)}%</div>
+                <div><span>🏆Top Performance</span>{topGame?.goals}G, {topGame?.assists}A on {topGame?.date}</div>
             </div>
 
             <div className="charts-row">

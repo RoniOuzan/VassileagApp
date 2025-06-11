@@ -225,7 +225,9 @@ const Predictions: React.FC = () => {
                         </div>
                     </div>
                 ) : (
-                    <div>Select players for both teams to see prediction</div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", fontSize: 20 }}>
+                        Select players for both teams to see prediction...
+                    </div>
                 )}
             </div>
         </div>

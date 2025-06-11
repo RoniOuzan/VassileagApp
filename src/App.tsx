@@ -1,4 +1,5 @@
 import {
+  AreaChartOutlined,
   ArrowLeftOutlined,
   BarChartOutlined,
   ScheduleOutlined,
@@ -202,7 +203,7 @@ const App = () => {
                     { key: "games", icon: <ScheduleOutlined />, label: "Games" },
                     { key: "players", icon: <TeamOutlined />, label: "Players" },
                     { key: "statistics", icon: <BarChartOutlined />, label: "Statistics" },
-                    { key: "predictions", icon: <BarChartOutlined />, label: "Predictions" },
+                    { key: "predictions", icon: <AreaChartOutlined />, label: "Predictions" },
                   ]}
                 />
               </Sider>
