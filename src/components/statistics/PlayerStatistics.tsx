@@ -261,10 +261,10 @@ const PlayerStatistics: React.FC<Props> = ({ player }) => {
                 </div>
 
                 <div className="wins_stats">
-                    <div><span>📈 Current Win Streak:</span>{currentWinStreak} games</div>
-                    <div><span>🤝 Avg Contribution in Wins:</span>{avgWinContribution.toFixed(2)} G/A</div>
-                    <div><span>🤝 Avg Contribution in Losses:</span>{avgLossContribution.toFixed(2)} G/A</div>
-                    <div><span>🚫 Games Without Contribution:</span>{zeroContributionGames} games</div>
+                    <div><span>🔥Current Win Streak:</span>{currentWinStreak} games</div>
+                    <div><span>🤝Avg Contribution in Wins:</span>{avgWinContribution.toFixed(2)} G/A</div>
+                    <div><span>🤝Avg Contribution in Losses:</span>{avgLossContribution.toFixed(2)} G/A</div>
+                    <div><span>🚫Games Without Contribution:</span>{zeroContributionGames} games</div>
                 </div>
             </div>
 

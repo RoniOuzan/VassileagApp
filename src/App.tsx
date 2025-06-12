@@ -4,6 +4,7 @@ import {
   BarChartOutlined,
   ScheduleOutlined,
   TeamOutlined,
+  TrophyOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu } from "antd";
 import { Header } from "antd/es/layout/layout";
@@ -21,12 +22,13 @@ import { useAnimationOrigin } from "./context/AnimationOriginContext.tsx";
 import { useLeague } from "./context/LeagueContext.tsx";
 import Leagues from "./components/leagues/Leagues.tsx";
 import Predictions from "./components/predictions/Predictions.tsx";
+import Leaderboard from "./components/leaderboard/Leaderboard.tsx";
 
 export const headerHeight = 64;
 
 const MotionHeader = motion.create(Header);
 
-const tabOrder = ["games", "players", "statistics", "predictions"];
+const tabOrder = ["games", "players", "statistics", "predictions", "leaderboard"];
 
 const App = () => {
   const { league, setLeague } = useLeague();
@@ -80,6 +82,8 @@ const App = () => {
         return <Statistics />;
       case "predictions":
         return <Predictions />;
+      case "leaderboard":
+        return <Leaderboard />;
       default:
         return (
           <div style={{ padding: "16px", color: "#F5D409" }}>
@@ -204,6 +208,7 @@ const App = () => {
                     { key: "players", icon: <TeamOutlined />, label: "Players" },
                     { key: "statistics", icon: <BarChartOutlined />, label: "Statistics" },
                     { key: "predictions", icon: <AreaChartOutlined />, label: "Predictions" },
+                    { key: "leaderboard", icon: <TrophyOutlined />, label: "Leaderboard" },
                   ]}
                 />
               </Sider>
