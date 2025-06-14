@@ -128,107 +128,109 @@ const Predictions: React.FC = () => {
 
     return (
         <div className="predictions">
-            <div style={{ fontSize: 48, margin: 8 }}><strong>🔮Match Predictions</strong></div>
+            <div style={{ fontSize: 48, margin: 32 }}><strong>🔮Match Predictions</strong></div>
 
             <div className="teams-creation">
                 <TeamCreator team={team1} setTeam={setTeam1} teamNumber={1} isPlayerNotListed={isPlayerNotListed} />
                 <TeamCreator team={team2} setTeam={setTeam2} teamNumber={2} isPlayerNotListed={isPlayerNotListed} />
             </div>
 
-            <div className="results">
-                <div style={{ fontSize: 40 }}><strong>Predictions</strong></div>
-                
-                {team1.length > 0 && team2.length > 0 ? (
-                    <div className="results-content">
-                        <div className="score-line">
-                            <div className="team-score">
-                                <div className="score">{score1}</div>
-                                <div className="label">Team 1</div>
-                            </div>
-                            <div className="vs">vs</div>
-                            <div className="team-score">
-                                <div className="score">{score2}</div>
-                                <div className="label">Team 2</div>
-                            </div>
-                        </div>
-
-                        <div className="charts-row">
-                            <div className="chart-box">
-                                <ResponsiveContainer width="100%" height={250}>
-                                    <PieChart>
-                                        <Pie
-                                            data={winRates}
-                                            dataKey="value"
-                                            cx="50%"
-                                            cy="50%"
-                                            outerRadius={70}
-                                            innerRadius={40}
-                                            labelLine={false}
-                                            label={({ name, percent }) =>
-                                                `${name}: ${(percent * 100).toFixed(0)}%`
-                                            }
-                                        >
-                                            <Cell fill="#F5D409" />
-                                            <Cell fill="#444" />
-                                        </Pie>
-                                    </PieChart>
-                                </ResponsiveContainer>
-                                <div className="chart-label">Win Rate</div>
-                            </div>
-
-                            <div className="chart-box">
-                                <ResponsiveContainer width="100%" height={250}>
-                                    <BarChart data={[
-                                        { name: "Team 1", strength: strength1 },
-                                        { name: "Team 2", strength: strength2 },
-                                    ]}>
-                                        <XAxis dataKey="name" stroke="#F5D409" />
-                                        <YAxis stroke="#F5D409" />
-                                        <Tooltip />
-                                        <Bar dataKey="strength" fill="#F5D409" barSize={40} />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                                <div className="chart-label">Team Strength</div>
-                            </div>
-
-                            <div className="chart-box">
-                                <div className="composition">
-                                    <div>
-                                        <strong>Composition 1:</strong> {comp1}
-                                    </div>
-                                    <div>
-                                        <strong>Composition 2:</strong> {comp2}
-                                    </div>
+            <div style={{ padding: "32px", height: "100%", width: "100%" }}>
+                <div className="results">
+                    <div style={{ fontSize: 40 }}><strong>Predictions</strong></div>
+                    
+                    {team1.length > 0 && team2.length > 0 ? (
+                        <div className="results-content">
+                            <div className="score-line">
+                                <div className="team-score">
+                                    <div className="score">{score1}</div>
+                                    <div className="label">Team 1</div>
                                 </div>
-                                <div className="chart-label">Team Composition</div>
+                                <div className="vs">vs</div>
+                                <div className="team-score">
+                                    <div className="score">{score2}</div>
+                                    <div className="label">Team 2</div>
+                                </div>
+                            </div>
+
+                            <div className="charts-row">
+                                <div className="chart-box">
+                                    <ResponsiveContainer width="100%" height={250}>
+                                        <PieChart>
+                                            <Pie
+                                                data={winRates}
+                                                dataKey="value"
+                                                cx="50%"
+                                                cy="50%"
+                                                outerRadius={70}
+                                                innerRadius={40}
+                                                labelLine={false}
+                                                label={({ name, percent }) =>
+                                                    `${name}: ${(percent * 100).toFixed(0)}%`
+                                                }
+                                            >
+                                                <Cell fill="#F5D409" />
+                                                <Cell fill="#444" />
+                                            </Pie>
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                    <div className="chart-label">Win Rate</div>
+                                </div>
+
+                                <div className="chart-box">
+                                    <ResponsiveContainer width="100%" height={250}>
+                                        <BarChart data={[
+                                            { name: "Team 1", strength: strength1 },
+                                            { name: "Team 2", strength: strength2 },
+                                        ]}>
+                                            <XAxis dataKey="name" stroke="#F5D409" />
+                                            <YAxis stroke="#F5D409" />
+                                            <Tooltip />
+                                            <Bar dataKey="strength" fill="#F5D409" barSize={40} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                    <div className="chart-label">Team Strength</div>
+                                </div>
+
+                                <div className="chart-box">
+                                    <div className="composition">
+                                        <div>
+                                            <strong>Composition 1:</strong> {comp1}
+                                        </div>
+                                        <div>
+                                            <strong>Composition 2:</strong> {comp2}
+                                        </div>
+                                    </div>
+                                    <div className="chart-label">Team Composition</div>
+                                </div>
+                            </div>
+
+                            <div className="motm-section">
+                                {motm && (
+                                    <>
+                                        <div style={{ display: "flex", flexDirection: "column", marginBottom: 8 }}>
+                                            <div style={{ fontSize: 24 }}>⭐ Man of the Match:</div>
+                                            <strong style={{ fontSize: 36 }}>{motm.name}</strong>
+                                        </div>
+
+                                        <RadarChart outerRadius={150} width={600} height={350} 
+                                                data={Object.entries(motm.ratings).map(([key, val]) => ({ stat: key, value: val }))}>
+                                            <PolarGrid />
+                                            <PolarAngleAxis dataKey="stat" stroke="#F5D409" />
+                                            <PolarRadiusAxis stroke="#ccc" />
+                                            <Radar name={motm.name} dataKey="value" stroke="#F5D409" fill="#F5D409" fillOpacity={0.5} />
+                                            <RechartsTooltip />
+                                        </RadarChart>
+                                    </>
+                                )}
                             </div>
                         </div>
-
-                        <div className="motm-section">
-                            {motm && (
-                                <>
-                                    <div style={{ display: "flex", flexDirection: "column", marginBottom: 8 }}>
-                                        <div style={{ fontSize: 24 }}>⭐ Man of the Match:</div>
-                                        <strong style={{ fontSize: 36 }}>{motm.name}</strong>
-                                    </div>
-
-                                    <RadarChart outerRadius={150} width={600} height={350} 
-                                            data={Object.entries(motm.ratings).map(([key, val]) => ({ stat: key, value: val }))}>
-                                        <PolarGrid />
-                                        <PolarAngleAxis dataKey="stat" stroke="#F5D409" />
-                                        <PolarRadiusAxis stroke="#ccc" />
-                                        <Radar name={motm.name} dataKey="value" stroke="#F5D409" fill="#F5D409" fillOpacity={0.5} />
-                                        <RechartsTooltip />
-                                    </RadarChart>
-                                </>
-                            )}
+                    ) : (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", fontSize: 20 }}>
+                            Select players for both teams to see prediction...
                         </div>
-                    </div>
-                ) : (
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", fontSize: 20 }}>
-                        Select players for both teams to see prediction...
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );
