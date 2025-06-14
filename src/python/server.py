@@ -9,17 +9,9 @@ from encryption import encrypt, decrypt
 
 HOST = '0.0.0.0'
 PORT = 3339
-ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://172.20.10.14:5173",
-    "http://192.168.1.73:5173"
-]
 
 def add_cors_headers(headers, origin):
-    if origin in ALLOWED_ORIGINS:
-        headers.append(f"Access-Control-Allow-Origin: {origin}")
-    else:
-        headers.append("Access-Control-Allow-Origin: *")
+    headers.append(f"Access-Control-Allow-Origin: {origin}")
     headers.extend([
         "Access-Control-Allow-Methods: GET, POST, OPTIONS",
         "Access-Control-Allow-Headers: Content-Type"
